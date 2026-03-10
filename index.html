@@ -232,6 +232,36 @@
       font-size: 1.05rem;
     }
 
+    .chi-sono-content {
+      display: flex;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .chi-sono-text {
+      flex: 1;
+    }
+
+    .chi-sono-photo img {
+      width: 300px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      object-fit: cover;
+      display: block;
+    }
+
+    @media (max-width: 640px) {
+      .chi-sono-content {
+        flex-direction: column;
+      }
+      .chi-sono-photo img {
+        width: 100%;
+        max-width: 320px;
+        margin: 0 auto;
+      }
+    }
+
     /* ====== GALLERY ====== */
     #lavori { background: var(--bg-section); }
 
@@ -483,236 +513,10 @@
       }
     }
 
-    /* ====== INTRO ANIMATION ====== */
-    #intro-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 9000;
-      background: #2c2c2c;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
 
-    #intro-overlay.fade-out {
-      animation: introFadeOut 0.8s ease forwards;
-    }
-
-    @keyframes introFadeOut {
-      to { opacity: 0; pointer-events: none; }
-    }
-
-    .intro-scene {
-      position: relative;
-      width: 320px;
-      height: 320px;
-    }
-
-    /* flour dust particles */
-    .flour-particles {
-      position: absolute;
-      inset: -60px;
-      pointer-events: none;
-    }
-
-    .flour-dot {
-      position: absolute;
-      border-radius: 50%;
-      background: rgba(240,232,216,0.6);
-      opacity: 0;
-    }
-
-    /* bowl shapes */
-    .intro-bowl {
-      position: absolute;
-      width: 110px;
-      height: 110px;
-      opacity: 0;
-    }
-
-    .intro-bowl svg {
-      width: 100%;
-      height: 100%;
-      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
-    }
-
-    /* bowl positions & animations */
-    .intro-bowl-1 {
-      top: 0; left: 0;
-      animation: bowl1Enter 0.6s 0.3s cubic-bezier(.34,1.56,.64,1) forwards,
-                 bowlCenter 0.5s 1.8s ease-in-out forwards;
-    }
-    .intro-bowl-2 {
-      top: 0; right: 0;
-      animation: bowl2Enter 0.6s 0.6s cubic-bezier(.34,1.56,.64,1) forwards,
-                 bowlCenter 0.5s 1.8s ease-in-out forwards;
-    }
-    .intro-bowl-3 {
-      bottom: 0; left: 0;
-      animation: bowl3Enter 0.6s 0.9s cubic-bezier(.34,1.56,.64,1) forwards,
-                 bowlCenter 0.5s 1.8s ease-in-out forwards;
-    }
-    .intro-bowl-4 {
-      bottom: 0; right: 0;
-      animation: bowl4Enter 0.6s 1.2s cubic-bezier(.34,1.56,.64,1) forwards,
-                 bowlCenter 0.5s 1.8s ease-in-out forwards;
-    }
-
-    @keyframes bowl1Enter {
-      from { opacity:0; transform: translate(-60px,-60px) scale(0.5); }
-      to   { opacity:1; transform: translate(0,0) scale(1); }
-    }
-    @keyframes bowl2Enter {
-      from { opacity:0; transform: translate(60px,-60px) scale(0.5); }
-      to   { opacity:1; transform: translate(0,0) scale(1); }
-    }
-    @keyframes bowl3Enter {
-      from { opacity:0; transform: translate(-60px,60px) scale(0.5); }
-      to   { opacity:1; transform: translate(0,0) scale(1); }
-    }
-    @keyframes bowl4Enter {
-      from { opacity:0; transform: translate(60px,60px) scale(0.5); }
-      to   { opacity:1; transform: translate(0,0) scale(1); }
-    }
-
-    @keyframes bowlCenter {
-      to { transform: translate(50px, 50px) scale(0.85); }
-    }
-
-    /* flour puff that appears when bowls "arrive" */
-    .intro-flour-burst {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 200px; height: 200px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(240,232,216,0.35) 0%, transparent 70%);
-      opacity: 0;
-      animation: flourBurst 0.6s 1.5s ease-out forwards;
-    }
-
-    @keyframes flourBurst {
-      0%   { opacity:0; transform: translate(-50%,-50%) scale(0.2); }
-      50%  { opacity:1; }
-      100% { opacity:0.15; transform: translate(-50%,-50%) scale(1.4); }
-    }
-
-    /* Logo reveal at the end */
-    .intro-logo-reveal {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%,-50%);
-      width: 180px;
-      height: auto;
-      opacity: 0;
-      border-radius: 12px;
-      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
-      animation: logoReveal 0.9s 2.4s ease-out forwards;
-    }
-
-    @keyframes logoReveal {
-      from { opacity:0; transform: translate(-50%,-50%) scale(0.7); }
-      to   { opacity:1; transform: translate(-50%,-50%) scale(1); }
-    }
   </style>
 </head>
 <body>
-
-<!-- ====== INTRO ANIMATION ====== -->
-<div id="intro-overlay">
-  <div class="intro-scene">
-    <!-- flour burst glow -->
-    <div class="intro-flour-burst"></div>
-
-    <!-- bowl 1 – top-left -->
-    <div class="intro-bowl intro-bowl-1">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <!-- flour cloud -->
-        <ellipse cx="50" cy="22" rx="28" ry="10" fill="rgba(240,232,216,0.55)"/>
-        <ellipse cx="38" cy="18" rx="14" ry="7" fill="rgba(240,232,216,0.4)"/>
-        <ellipse cx="62" cy="19" rx="12" ry="6" fill="rgba(240,232,216,0.35)"/>
-        <!-- bowl body -->
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw1)" opacity="0.6"/>
-        <!-- bowl rim -->
-        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
-        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
-        <!-- flour inside -->
-        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
-        <defs>
-          <radialGradient id="bw1" cx="40%" cy="30%">
-            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
-            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
-          </radialGradient>
-        </defs>
-      </svg>
-    </div>
-
-    <!-- bowl 2 – top-right -->
-    <div class="intro-bowl intro-bowl-2">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="50" cy="22" rx="28" ry="10" fill="rgba(240,232,216,0.55)"/>
-        <ellipse cx="36" cy="17" rx="13" ry="6" fill="rgba(240,232,216,0.35)"/>
-        <ellipse cx="64" cy="20" rx="15" ry="8" fill="rgba(240,232,216,0.4)"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw2)" opacity="0.6"/>
-        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
-        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
-        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
-        <defs>
-          <radialGradient id="bw2" cx="60%" cy="30%">
-            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
-            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
-          </radialGradient>
-        </defs>
-      </svg>
-    </div>
-
-    <!-- bowl 3 – bottom-left -->
-    <div class="intro-bowl intro-bowl-3">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="50" cy="22" rx="26" ry="9" fill="rgba(240,232,216,0.5)"/>
-        <ellipse cx="40" cy="19" rx="14" ry="6" fill="rgba(240,232,216,0.38)"/>
-        <ellipse cx="60" cy="16" rx="11" ry="5" fill="rgba(240,232,216,0.3)"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw3)" opacity="0.6"/>
-        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
-        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
-        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
-        <defs>
-          <radialGradient id="bw3" cx="40%" cy="30%">
-            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
-            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
-          </radialGradient>
-        </defs>
-      </svg>
-    </div>
-
-    <!-- bowl 4 – bottom-right -->
-    <div class="intro-bowl intro-bowl-4">
-      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <ellipse cx="50" cy="20" rx="30" ry="11" fill="rgba(240,232,216,0.6)"/>
-        <ellipse cx="35" cy="16" rx="12" ry="5" fill="rgba(240,232,216,0.35)"/>
-        <ellipse cx="65" cy="18" rx="13" ry="6" fill="rgba(240,232,216,0.4)"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
-        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw4)" opacity="0.6"/>
-        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
-        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
-        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
-        <defs>
-          <radialGradient id="bw4" cx="55%" cy="35%">
-            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
-            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
-          </radialGradient>
-        </defs>
-      </svg>
-    </div>
-
-    <!-- logo reveal -->
-    <img class="intro-logo-reveal" src="img/Logo.jpeg" alt="Easy By Isy" />
-  </div>
-</div>
 
 
 <header id="navbar">
@@ -756,9 +560,16 @@
 <section id="chi-sono">
   <div class="section-inner">
     <h1 class="section-title" data-i18n="nav-chi-sono">Chi sono</h1>
-    <p class="chi-sono-placeholder" data-i18n="chi-sono-placeholder">
-      Contenuto in arrivo…
-    </p>
+    <div class="chi-sono-content">
+      <div class="chi-sono-text">
+        <p class="chi-sono-placeholder" data-i18n="chi-sono-placeholder">
+          Contenuto in arrivo…
+        </p>
+      </div>
+      <div class="chi-sono-photo">
+        <img src="img/chisono.jpeg" alt="Chi sono" />
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1196,45 +1007,6 @@
     });
   })();
 
-  /* ---- intro animation ---- */
-  (function runIntro() {
-    const overlay = document.getElementById('intro-overlay');
-    if (!overlay) return;
-
-    // Skip if already shown this session
-    if (sessionStorage.getItem('ebi-intro-shown')) {
-      overlay.style.display = 'none';
-      return;
-    }
-
-    // Prevent scrolling during intro
-    document.body.style.overflow = 'hidden';
-
-    // After logo is shown (2.4s anim + 0.9s duration = 3.3s), wait a bit then fade out
-    const fadeDelay = 3800; // ms: start fade-out
-    const removeDelay = fadeDelay + 900; // ms: remove overlay after fade
-
-    setTimeout(() => {
-      overlay.classList.add('fade-out');
-    }, fadeDelay);
-
-    setTimeout(() => {
-      overlay.style.display = 'none';
-      document.body.style.overflow = '';
-      sessionStorage.setItem('ebi-intro-shown', '1');
-    }, removeDelay);
-
-    // Allow user to skip by clicking/tapping
-    overlay.addEventListener('click', () => {
-      overlay.style.transition = 'opacity 0.4s ease';
-      overlay.style.opacity = '0';
-      setTimeout(() => {
-        overlay.style.display = 'none';
-        document.body.style.overflow = '';
-        sessionStorage.setItem('ebi-intro-shown', '1');
-      }, 400);
-    });
-  })();
 </script>
 </body>
 </html>
