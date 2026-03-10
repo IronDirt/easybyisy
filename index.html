@@ -9,15 +9,15 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #1a1410;
-      --bg-nav:    #120f0b;
-      --bg-card:   #231c16;
-      --bg-section:#1f1812;
-      --accent:    #b88a50;
-      --accent2:   #8c6535;
-      --text:      #e8d5b7;
-      --text-muted:#9e8870;
-      --border:    #3a2e22;
+      --bg:        #3a3a3a;
+      --bg-nav:    #2c2c2c;
+      --bg-card:   #474747;
+      --bg-section:#424242;
+      --accent:    #f0e8d8;
+      --accent2:   #c8c0b4;
+      --text:      #f0e8d8;
+      --text-muted:#b0a8a0;
+      --border:    #5a5a5a;
       --radius:    8px;
       --transition: 0.3s ease;
     }
@@ -85,7 +85,7 @@
 
     nav a:hover, nav a.active {
       color: var(--accent);
-      background: rgba(184,138,80,0.1);
+      background: rgba(240,232,216,0.1);
     }
 
     /* Language switcher */
@@ -321,7 +321,7 @@
     #lightbox-prev, #lightbox-next {
       position: absolute;
       top: 50%; transform: translateY(-50%);
-      background: rgba(184,138,80,0.15);
+      background: rgba(240,232,216,0.15);
       border: 1px solid var(--accent2);
       border-radius: var(--radius);
       color: var(--accent);
@@ -334,17 +334,75 @@
       transition: background var(--transition);
     }
 
-    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(184,138,80,0.3); }
+    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(240,232,216,0.3); }
     #lightbox-prev { left: 1rem; }
     #lightbox-next { right: 1rem; }
 
     /* ====== CORSI ====== */
     #corsi { background: var(--bg); }
 
-    .corsi-placeholder {
+    .corsi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .corso-card {
+      position: relative;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: var(--bg-card);
+      aspect-ratio: 3 / 4;
+    }
+
+    .corso-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: filter var(--transition);
+    }
+
+    .corso-card.past img {
+      filter: grayscale(60%) brightness(0.4);
+    }
+
+    .corso-badge {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 0.6rem 0.9rem;
+      background: rgba(44,44,44,0.85);
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .corso-badge .corso-date {
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .corso-past-label {
+      font-size: 0.75rem;
+      background: rgba(90,90,90,0.8);
       color: var(--text-muted);
-      font-style: italic;
-      font-size: 1.05rem;
+      border-radius: 4px;
+      padding: 0.15rem 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    @media (max-width: 768px) {
+      .corsi-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 1rem;
+      }
     }
 
     /* ====== CONTATTO ====== */
@@ -424,11 +482,239 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
+
+    /* ====== INTRO ANIMATION ====== */
+    #intro-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9000;
+      background: #2c2c2c;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #intro-overlay.fade-out {
+      animation: introFadeOut 0.8s ease forwards;
+    }
+
+    @keyframes introFadeOut {
+      to { opacity: 0; pointer-events: none; }
+    }
+
+    .intro-scene {
+      position: relative;
+      width: 320px;
+      height: 320px;
+    }
+
+    /* flour dust particles */
+    .flour-particles {
+      position: absolute;
+      inset: -60px;
+      pointer-events: none;
+    }
+
+    .flour-dot {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(240,232,216,0.6);
+      opacity: 0;
+    }
+
+    /* bowl shapes */
+    .intro-bowl {
+      position: absolute;
+      width: 110px;
+      height: 110px;
+      opacity: 0;
+    }
+
+    .intro-bowl svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 4px 12px rgba(0,0,0,0.5));
+    }
+
+    /* bowl positions & animations */
+    .intro-bowl-1 {
+      top: 0; left: 0;
+      animation: bowl1Enter 0.6s 0.3s cubic-bezier(.34,1.56,.64,1) forwards,
+                 bowlCenter 0.5s 1.8s ease-in-out forwards;
+    }
+    .intro-bowl-2 {
+      top: 0; right: 0;
+      animation: bowl2Enter 0.6s 0.6s cubic-bezier(.34,1.56,.64,1) forwards,
+                 bowlCenter 0.5s 1.8s ease-in-out forwards;
+    }
+    .intro-bowl-3 {
+      bottom: 0; left: 0;
+      animation: bowl3Enter 0.6s 0.9s cubic-bezier(.34,1.56,.64,1) forwards,
+                 bowlCenter 0.5s 1.8s ease-in-out forwards;
+    }
+    .intro-bowl-4 {
+      bottom: 0; right: 0;
+      animation: bowl4Enter 0.6s 1.2s cubic-bezier(.34,1.56,.64,1) forwards,
+                 bowlCenter 0.5s 1.8s ease-in-out forwards;
+    }
+
+    @keyframes bowl1Enter {
+      from { opacity:0; transform: translate(-60px,-60px) scale(0.5); }
+      to   { opacity:1; transform: translate(0,0) scale(1); }
+    }
+    @keyframes bowl2Enter {
+      from { opacity:0; transform: translate(60px,-60px) scale(0.5); }
+      to   { opacity:1; transform: translate(0,0) scale(1); }
+    }
+    @keyframes bowl3Enter {
+      from { opacity:0; transform: translate(-60px,60px) scale(0.5); }
+      to   { opacity:1; transform: translate(0,0) scale(1); }
+    }
+    @keyframes bowl4Enter {
+      from { opacity:0; transform: translate(60px,60px) scale(0.5); }
+      to   { opacity:1; transform: translate(0,0) scale(1); }
+    }
+
+    @keyframes bowlCenter {
+      to { transform: translate(50px, 50px) scale(0.85); }
+    }
+
+    /* flour puff that appears when bowls "arrive" */
+    .intro-flour-burst {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(240,232,216,0.35) 0%, transparent 70%);
+      opacity: 0;
+      animation: flourBurst 0.6s 1.5s ease-out forwards;
+    }
+
+    @keyframes flourBurst {
+      0%   { opacity:0; transform: translate(-50%,-50%) scale(0.2); }
+      50%  { opacity:1; }
+      100% { opacity:0.15; transform: translate(-50%,-50%) scale(1.4); }
+    }
+
+    /* Logo reveal at the end */
+    .intro-logo-reveal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 180px;
+      height: auto;
+      opacity: 0;
+      border-radius: 12px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      animation: logoReveal 0.9s 2.4s ease-out forwards;
+    }
+
+    @keyframes logoReveal {
+      from { opacity:0; transform: translate(-50%,-50%) scale(0.7); }
+      to   { opacity:1; transform: translate(-50%,-50%) scale(1); }
+    }
   </style>
 </head>
 <body>
 
-<!-- ====== NAVBAR ====== -->
+<!-- ====== INTRO ANIMATION ====== -->
+<div id="intro-overlay">
+  <div class="intro-scene">
+    <!-- flour burst glow -->
+    <div class="intro-flour-burst"></div>
+
+    <!-- bowl 1 – top-left -->
+    <div class="intro-bowl intro-bowl-1">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <!-- flour cloud -->
+        <ellipse cx="50" cy="22" rx="28" ry="10" fill="rgba(240,232,216,0.55)"/>
+        <ellipse cx="38" cy="18" rx="14" ry="7" fill="rgba(240,232,216,0.4)"/>
+        <ellipse cx="62" cy="19" rx="12" ry="6" fill="rgba(240,232,216,0.35)"/>
+        <!-- bowl body -->
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw1)" opacity="0.6"/>
+        <!-- bowl rim -->
+        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
+        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
+        <!-- flour inside -->
+        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
+        <defs>
+          <radialGradient id="bw1" cx="40%" cy="30%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- bowl 2 – top-right -->
+    <div class="intro-bowl intro-bowl-2">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="22" rx="28" ry="10" fill="rgba(240,232,216,0.55)"/>
+        <ellipse cx="36" cy="17" rx="13" ry="6" fill="rgba(240,232,216,0.35)"/>
+        <ellipse cx="64" cy="20" rx="15" ry="8" fill="rgba(240,232,216,0.4)"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw2)" opacity="0.6"/>
+        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
+        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
+        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
+        <defs>
+          <radialGradient id="bw2" cx="60%" cy="30%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- bowl 3 – bottom-left -->
+    <div class="intro-bowl intro-bowl-3">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="22" rx="26" ry="9" fill="rgba(240,232,216,0.5)"/>
+        <ellipse cx="40" cy="19" rx="14" ry="6" fill="rgba(240,232,216,0.38)"/>
+        <ellipse cx="60" cy="16" rx="11" ry="5" fill="rgba(240,232,216,0.3)"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw3)" opacity="0.6"/>
+        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
+        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
+        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
+        <defs>
+          <radialGradient id="bw3" cx="40%" cy="30%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- bowl 4 – bottom-right -->
+    <div class="intro-bowl intro-bowl-4">
+      <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="50" cy="20" rx="30" ry="11" fill="rgba(240,232,216,0.6)"/>
+        <ellipse cx="35" cy="16" rx="12" ry="5" fill="rgba(240,232,216,0.35)"/>
+        <ellipse cx="65" cy="18" rx="13" ry="6" fill="rgba(240,232,216,0.4)"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="#d4c8b8"/>
+        <path d="M15 42 Q16 72 50 78 Q84 72 85 42 Z" fill="url(#bw4)" opacity="0.6"/>
+        <ellipse cx="50" cy="42" rx="35" ry="9" fill="#c0b4a4"/>
+        <ellipse cx="50" cy="42" rx="33" ry="7" fill="#e8dece"/>
+        <ellipse cx="50" cy="44" rx="30" ry="6" fill="rgba(255,252,245,0.85)"/>
+        <defs>
+          <radialGradient id="bw4" cx="55%" cy="35%">
+            <stop offset="0%" stop-color="white" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="black" stop-opacity="0.15"/>
+          </radialGradient>
+        </defs>
+      </svg>
+    </div>
+
+    <!-- logo reveal -->
+    <img class="intro-logo-reveal" src="img/Logo.jpeg" alt="Easy By Isy" />
+  </div>
+</div>
+
+
 <header id="navbar">
   <div class="nav-logo">
     <img src="img/Logo.jpeg" alt="Easy By Isy" />
@@ -625,9 +911,9 @@
 <section id="corsi">
   <div class="section-inner">
     <h2 class="section-title" data-i18n="nav-corsi">Corsi</h2>
-    <p class="corsi-placeholder" data-i18n="corsi-placeholder">
-      Contenuto in arrivo...
-    </p>
+    <div class="corsi-grid" id="corsi-grid">
+      <!-- Images injected by JavaScript based on date -->
+    </div>
   </div>
 </section>
 
@@ -674,7 +960,6 @@
       'nav-corsi':            'Corsi',
       'nav-contatto':         'Contatto',
       'chi-sono-placeholder': 'Contenuto in arrivo…',
-      'corsi-placeholder':    'Contenuto in arrivo…',
       'contatto-text':        'Per collaborazioni, richieste, informazioni sui corsi o lezioni private, non esitare a contattarmi — sarò felice di risponderti.',
       'contatto-btn':         'Scrivimi',
     },
@@ -684,7 +969,6 @@
       'nav-corsi':            'Kurse',
       'nav-contatto':         'Kontakt',
       'chi-sono-placeholder': 'Inhalte folgen demnächst…',
-      'corsi-placeholder':    'Inhalte folgen demnächst…',
       'contatto-text':        'Für Kooperationen, Anfragen, Informationen zu Kursen oder Privatstunden stehe ich gerne zur Verfügung — ich freue mich auf deine Nachricht.',
       'contatto-btn':         'Schreib mir',
     },
@@ -694,7 +978,6 @@
       'nav-corsi':            'Courses',
       'nav-contatto':         'Contact',
       'chi-sono-placeholder': 'Content coming soon…',
-      'corsi-placeholder':    'Content coming soon…',
       'contatto-text':        'For collaborations, inquiries, information about courses or private lessons, feel free to reach out — I\'ll be happy to reply.',
       'contatto-btn':         'Write to me',
     }
@@ -834,6 +1117,124 @@
   /* ---- init ---- */
   applyLang(currentLang);
   onScroll();
+
+  /* ---- corsi grid ---- */
+  (function buildCorsi() {
+    // All images in the corsi folder, filenames are DD.MM.YYYY.jpg or .jpeg
+    const corsiImages = [
+      '16.08.2025.jpg',
+      '28.03.2026.jpg'
+    ];
+
+    const grid = document.getElementById('corsi-grid');
+    if (!grid) return;
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const labels = {
+      it: { past: 'Passato', future: 'In programma' },
+      de: { past: 'Vergangen', future: 'Geplant' },
+      en: { past: 'Past', future: 'Upcoming' }
+    };
+
+    corsiImages.forEach(filename => {
+      // Parse DD.MM.YYYY from filename
+      const match = filename.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+      if (!match) return;
+
+      const day   = parseInt(match[1], 10);
+      const month = parseInt(match[2], 10) - 1; // months 0-indexed
+      const year  = parseInt(match[3], 10);
+      const courseDate = new Date(year, month, day);
+      courseDate.setHours(0, 0, 0, 0);
+
+      const isPast = courseDate < today;
+
+      // Format display date: DD/MM/YYYY
+      const displayDate = `${match[1]}/${match[2]}/${match[3]}`;
+
+      const card = document.createElement('div');
+      card.className = 'corso-card' + (isPast ? ' past' : '');
+
+      const img = document.createElement('img');
+      img.src = `corsi/${filename}`;
+      img.alt = `Corso del ${displayDate}`;
+      img.loading = 'lazy';
+
+      const badge = document.createElement('div');
+      badge.className = 'corso-badge';
+
+      const dateSpan = document.createElement('span');
+      dateSpan.className = 'corso-date';
+      dateSpan.textContent = displayDate;
+
+      const statusSpan = document.createElement('span');
+      statusSpan.className = 'corso-past-label';
+      const lang = currentLang && labels[currentLang] ? currentLang : 'it';
+      statusSpan.textContent = isPast ? labels[lang].past : labels[lang].future;
+      statusSpan.dataset.corsoStatus = isPast ? 'past' : 'future';
+
+      badge.appendChild(dateSpan);
+      badge.appendChild(statusSpan);
+      card.appendChild(img);
+      card.appendChild(badge);
+      grid.appendChild(card);
+    });
+
+    // Re-render labels when language changes
+    const origApplyLang = applyLang;
+    // patch: update corso labels on lang change
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const lang = btn.dataset.lang;
+        document.querySelectorAll('[data-corso-status]').forEach(el => {
+          const status = el.dataset.corsoStatus;
+          el.textContent = labels[lang][status];
+        });
+      });
+    });
+  })();
+
+  /* ---- intro animation ---- */
+  (function runIntro() {
+    const overlay = document.getElementById('intro-overlay');
+    if (!overlay) return;
+
+    // Skip if already shown this session
+    if (sessionStorage.getItem('ebi-intro-shown')) {
+      overlay.style.display = 'none';
+      return;
+    }
+
+    // Prevent scrolling during intro
+    document.body.style.overflow = 'hidden';
+
+    // After logo is shown (2.4s anim + 0.9s duration = 3.3s), wait a bit then fade out
+    const fadeDelay = 3800; // ms: start fade-out
+    const removeDelay = fadeDelay + 900; // ms: remove overlay after fade
+
+    setTimeout(() => {
+      overlay.classList.add('fade-out');
+    }, fadeDelay);
+
+    setTimeout(() => {
+      overlay.style.display = 'none';
+      document.body.style.overflow = '';
+      sessionStorage.setItem('ebi-intro-shown', '1');
+    }, removeDelay);
+
+    // Allow user to skip by clicking/tapping
+    overlay.addEventListener('click', () => {
+      overlay.style.transition = 'opacity 0.4s ease';
+      overlay.style.opacity = '0';
+      setTimeout(() => {
+        overlay.style.display = 'none';
+        document.body.style.overflow = '';
+        sessionStorage.setItem('ebi-intro-shown', '1');
+      }, 400);
+    });
+  })();
 </script>
 </body>
 </html>
