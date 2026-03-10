@@ -224,6 +224,14 @@
       top: 0; left: 0; right: 0; bottom: 0;
       background: radial-gradient(ellipse at 30% 50%, rgba(140,101,53,0.08) 0%, transparent 65%);
       pointer-events: none;
+      z-index: 1;
+    }
+
+    #chi-sono > .section-inner {
+      max-width: 50%;
+      margin: 0;
+      position: relative;
+      z-index: 2;
     }
 
     .chi-sono-placeholder {
@@ -234,7 +242,6 @@
 
     .chi-sono-content {
       display: flex;
-      gap: 3rem;
       align-items: center;
     }
 
@@ -242,23 +249,31 @@
       flex: 1;
     }
 
+    .chi-sono-photo {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 0;
+    }
+
     .chi-sono-photo img {
-      width: 300px;
-      max-width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+      width: 100%;
+      height: 100%;
       object-fit: cover;
+      object-position: center;
       display: block;
     }
 
     @media (max-width: 640px) {
-      .chi-sono-content {
-        flex-direction: column;
+      #chi-sono > .section-inner {
+        max-width: 100%;
       }
-      .chi-sono-photo img {
+      .chi-sono-photo {
+        position: relative;
         width: 100%;
-        max-width: 320px;
-        margin: 0 auto;
+        height: 300px;
       }
     }
 
@@ -599,10 +614,10 @@
           Contenuto in arrivo…
         </p>
       </div>
-      <div class="chi-sono-photo">
-        <img src="img/chisono.jpeg" alt="Chi sono" />
-      </div>
     </div>
+  </div>
+  <div class="chi-sono-photo">
+    <img src="img/chisono.jpeg" alt="Chi sono" />
   </div>
 </section>
 
