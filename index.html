@@ -3231,7 +3231,9 @@
           galleryGrid.appendChild(item);
         });
 
-        galleryItems = Array.from(galleryGrid.querySelectorAll(".gallery-item"));
+        galleryItems = Array.from(
+          galleryGrid.querySelectorAll(".gallery-item"),
+        );
         bindGalleryImageLoadEvents();
         bindGalleryClicks();
         applyInitialGalleryVisibility();
@@ -3239,9 +3241,13 @@
       }
 
       function getFallbackGallerySources() {
-        return Array.from(document.querySelectorAll("#gallery .gallery-item img"))
+        return Array.from(
+          document.querySelectorAll("#gallery .gallery-item img"),
+        )
           .map((img) => img.getAttribute("src") || "")
-          .filter((src) => src.startsWith("galleria/") && galleryImageExt.test(src));
+          .filter(
+            (src) => src.startsWith("galleria/") && galleryImageExt.test(src),
+          );
       }
 
       async function fetchGalleryFilenamesFromPhp() {
