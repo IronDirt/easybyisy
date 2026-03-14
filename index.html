@@ -442,7 +442,7 @@
         align-items: center;
         justify-content: center;
         background: var(--accent2);
-        color: var(--text);
+        color: var(--bg);
         border: 1px solid var(--accent);
         border-radius: var(--radius);
         padding: 0.62rem 1.35rem;
@@ -678,7 +678,9 @@
         font-weight: 600;
         cursor: pointer;
         letter-spacing: 0.04em;
-        transition: background var(--transition), color var(--transition);
+        transition:
+          background var(--transition),
+          color var(--transition);
       }
       #corsi-show-more:hover {
         background: var(--bg-card);
@@ -706,7 +708,7 @@
         align-items: center;
         gap: 0.6rem;
         background: var(--accent2);
-        color: var(--text);
+        color: var(--bg);
         border: 1px solid var(--accent);
         border-radius: var(--radius);
         padding: 0.75rem 1.6rem;
@@ -1329,7 +1331,13 @@
         <div class="corsi-grid" id="corsi-grid">
           <!-- Images injected by JavaScript based on date -->
         </div>
-        <button id="corsi-show-more" style="display:none" data-i18n="corsi-show-more">Mostra altro</button>
+        <button
+          id="corsi-show-more"
+          style="display: none"
+          data-i18n="corsi-show-more"
+        >
+          Mostra altro
+        </button>
       </div>
     </section>
 
@@ -1690,7 +1698,11 @@
         const localeMap = { it: "it-IT", de: "de-DE", en: "en-GB" };
         const formatDate = (date, lang) =>
           date
-            .toLocaleDateString(localeMap[lang] || "it-IT", { weekday: "short", day: "numeric", month: "long" })
+            .toLocaleDateString(localeMap[lang] || "it-IT", {
+              weekday: "short",
+              day: "numeric",
+              month: "long",
+            })
             .replace(/\b\w/g, (c) => c.toUpperCase());
 
         // Parse dates and sort: future ascending (soonest first), then past descending (most recent first)
@@ -1761,8 +1773,10 @@
             c.classList.toggle("corso-hidden", !expanded && i >= LIMIT);
           });
           if (showMoreBtn) {
-            showMoreBtn.style.display = allCards.length > LIMIT ? "block" : "none";
-            const lang = currentLang && translations[currentLang] ? currentLang : "it";
+            showMoreBtn.style.display =
+              allCards.length > LIMIT ? "block" : "none";
+            const lang =
+              currentLang && translations[currentLang] ? currentLang : "it";
             showMoreBtn.textContent = expanded
               ? translations[lang]["corsi-show-less"]
               : translations[lang]["corsi-show-more"];
@@ -1786,10 +1800,12 @@
               const status = el.dataset.corsoStatus;
               el.textContent = labels[lang][status];
             });
-            document.querySelectorAll("[data-corso-timestamp]").forEach((el) => {
-              const d = new Date(parseInt(el.dataset.corsoTimestamp, 10));
-              el.textContent = formatDate(d, lang);
-            });
+            document
+              .querySelectorAll("[data-corso-timestamp]")
+              .forEach((el) => {
+                const d = new Date(parseInt(el.dataset.corsoTimestamp, 10));
+                el.textContent = formatDate(d, lang);
+              });
             if (showMoreBtn && allCards.length > LIMIT) {
               showMoreBtn.textContent = expanded
                 ? translations[lang]["corsi-show-less"]
