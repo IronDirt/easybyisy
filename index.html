@@ -177,7 +177,7 @@
         left: 50%;
         bottom: 26px;
         z-index: var(--bowl-z, 1);
-        opacity: 1;
+        opacity: 0;
         transform-origin: center 82%;
         animation:
           bowl-drop-stack 0.56s cubic-bezier(0.22, 0.61, 0.36, 1)
@@ -347,6 +347,7 @@
 
       @keyframes bowl-drop-stack {
         0% {
+          opacity: 0;
           transform: translate3d(
               calc(-50% + var(--stack-x, 0px)),
               calc(var(--stack-y, 0px) - 352px),
@@ -354,7 +355,11 @@
             )
             rotate(calc(var(--stack-r, 0deg) * 0.58)) scale(0.9);
         }
+        10% {
+          opacity: 1;
+        }
         72% {
+          opacity: 1;
           transform: translate3d(
               calc(-50% + var(--stack-x, 0px)),
               calc(var(--stack-y, 0px) - 14px),
@@ -363,6 +368,7 @@
             rotate(calc(var(--stack-r, 0deg) * 0.9)) scale(0.988);
         }
         88% {
+          opacity: 1;
           transform: translate3d(
               calc(-50% + var(--stack-x, 0px)),
               calc(var(--stack-y, 0px) - 4px),
@@ -371,6 +377,7 @@
             rotate(calc(var(--stack-r, 0deg) * 0.97)) scale(0.996);
         }
         100% {
+          opacity: 1;
           transform: translate3d(
               calc(-50% + var(--stack-x, 0px)),
               var(--stack-y, 0px),
@@ -921,6 +928,10 @@
       /* ====== GALLERY ====== */
       #lavori {
         background: var(--bg-section);
+      }
+
+      #lavori > .section-inner {
+        max-width: none;
       }
 
       .gallery-grid {
