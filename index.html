@@ -238,8 +238,7 @@
         opacity: 0;
         transform: translate(-50%, 0) scale(0.22);
         animation: flour-firework var(--flight, 1.46s)
-          cubic-bezier(0.2, 0.52, 0.24, 1) calc(var(--t, 1.76s) - 0.5s)
-          forwards;
+          cubic-bezier(0.2, 0.52, 0.24, 1) calc(var(--t, 1.76s) - 0.5s) forwards;
         will-change: transform, opacity;
         backface-visibility: hidden;
         --drift-mid: 0px;
@@ -344,7 +343,8 @@
       }
 
       .intro-brand p {
-        font-family: "Snell Roundhand", "Brush Script MT", "Segoe Script",
+        font-family:
+          "Snell Roundhand", "Brush Script MT", "Segoe Script",
           "Apple Chancery", cursive;
         font-size: clamp(2rem, 5.6vw, 3.2rem);
         font-weight: 500;
@@ -374,16 +374,14 @@
         0% {
           opacity: 0;
           transform: translate(-50%, var(--start-y, 76px))
-            translateX(var(--start-x))
-            rotate(var(--start-r)) scale(0.9);
+            translateX(var(--start-x)) rotate(var(--start-r)) scale(0.9);
         }
         12% {
           opacity: 1;
         }
         52% {
           transform: translate(-50%, var(--curve-y, -16px))
-            translateX(var(--curve-x)) rotate(var(--curve-r))
-            scale(1.01);
+            translateX(var(--curve-x)) rotate(var(--curve-r)) scale(1.01);
         }
         100% {
           opacity: 1;
@@ -451,7 +449,8 @@
               ),
               calc(
                 var(--peak-y, -58px) + var(--dy, 0px) + var(--apex-extra, 0px) +
-                  var(--fade-rise, -18px) + var(--arc-y, 0px) + var(--spread-y, 0px)
+                  var(--fade-rise, -18px) + var(--arc-y, 0px) +
+                  var(--spread-y, 0px)
               )
             )
             scale(var(--s, 1.25));
@@ -1272,118 +1271,847 @@
   </head>
   <body class="intro-active">
     <div id="intro-overlay" role="presentation">
-      <button class="intro-skip" id="intro-skip" type="button">Salta intro</button>
+      <button class="intro-skip" id="intro-skip" type="button">
+        Salta intro
+      </button>
       <div class="intro-stage">
         <div class="intro-bowls" aria-hidden="true">
           <div
             class="intro-bowl"
-            style="--delay: 0s; --start-x: -235px; --curve-x: -160px; --start-r: -10deg; --curve-r: 2.5deg; --start-y: 68px; --curve-y: -14px"
+            style="
+              --delay: 0s;
+              --start-x: -235px;
+              --curve-x: -160px;
+              --start-r: -10deg;
+              --curve-r: 2.5deg;
+              --start-y: 68px;
+              --curve-y: -14px;
+            "
           >
             <span class="flour-surface"></span>
           </div>
           <div
             class="intro-bowl"
-            style="--delay: 0.03s; --start-x: -95px; --curve-x: -66px; --start-r: -5deg; --curve-r: 1.4deg; --start-y: 86px; --curve-y: -20px"
+            style="
+              --delay: 0.03s;
+              --start-x: -95px;
+              --curve-x: -66px;
+              --start-r: -5deg;
+              --curve-r: 1.4deg;
+              --start-y: 86px;
+              --curve-y: -20px;
+            "
           >
             <span class="flour-surface"></span>
           </div>
           <div
             class="intro-bowl"
-            style="--delay: 0.06s; --start-x: 95px; --curve-x: 66px; --start-r: 5deg; --curve-r: -1.4deg; --start-y: 62px; --curve-y: -12px"
+            style="
+              --delay: 0.06s;
+              --start-x: 95px;
+              --curve-x: 66px;
+              --start-r: 5deg;
+              --curve-r: -1.4deg;
+              --start-y: 62px;
+              --curve-y: -12px;
+            "
           >
             <span class="flour-surface"></span>
           </div>
           <div
             class="intro-bowl"
-            style="--delay: 0.09s; --start-x: 235px; --curve-x: 160px; --start-r: 10deg; --curve-r: -2.5deg; --start-y: 80px; --curve-y: -18px"
+            style="
+              --delay: 0.09s;
+              --start-x: 235px;
+              --curve-x: 160px;
+              --start-r: 10deg;
+              --curve-r: -2.5deg;
+              --start-y: 80px;
+              --curve-y: -18px;
+            "
           >
             <span class="flour-surface"></span>
           </div>
         </div>
         <div class="intro-flour" aria-hidden="true">
           <div class="intro-flour-cloud"></div>
-          <span style="--dx: -214px; --dy: -36px; --s: 1.1; --t: 2.28s; --w: 2.2px; --h: 2.2px; --a: 0.76; --blur: 0.3px"></span>
-          <span style="--dx: -182px; --dy: -74px; --s: 1.2; --t: 2.26s; --w: 2.8px; --h: 2.8px; --a: 0.9; --blur: 0.22px"></span>
-          <span style="--dx: -146px; --dy: -118px; --s: 1.35; --t: 2.24s; --w: 2.1px; --h: 2.6px; --a: 0.72; --blur: 0.35px"></span>
-          <span style="--dx: -86px; --dy: -138px; --s: 1.42; --t: 2.31s; --w: 3px; --h: 2px; --a: 0.86; --blur: 0.2px"></span>
-          <span style="--dx: -24px; --dy: -154px; --s: 1.46; --t: 2.27s; --w: 2.6px; --h: 2.6px; --a: 0.84; --blur: 0.24px"></span>
-          <span style="--dx: 34px; --dy: -152px; --s: 1.45; --t: 2.33s; --w: 2px; --h: 2px; --a: 0.7; --blur: 0.36px"></span>
-          <span style="--dx: 94px; --dy: -134px; --s: 1.4; --t: 2.29s; --w: 3.1px; --h: 2.1px; --a: 0.9; --blur: 0.18px"></span>
-          <span style="--dx: 152px; --dy: -112px; --s: 1.32; --t: 2.25s; --w: 2.4px; --h: 2.4px; --a: 0.82; --blur: 0.24px"></span>
-          <span style="--dx: 188px; --dy: -74px; --s: 1.18; --t: 2.3s; --w: 2.2px; --h: 2.2px; --a: 0.78; --blur: 0.3px"></span>
-          <span style="--dx: 216px; --dy: -32px; --s: 1.08; --t: 2.28s; --w: 2.7px; --h: 2.3px; --a: 0.84; --blur: 0.2px"></span>
-          <span style="--dx: -162px; --dy: 4px; --s: 1.06; --t: 2.35s; --w: 2.4px; --h: 2.1px; --a: 0.72; --blur: 0.25px"></span>
-          <span style="--dx: -106px; --dy: 16px; --s: 1; --t: 2.36s; --w: 2.1px; --h: 2.1px; --a: 0.68; --blur: 0.32px"></span>
-          <span style="--dx: -42px; --dy: 24px; --s: 0.95; --t: 2.37s; --w: 2.5px; --h: 2.2px; --a: 0.75; --blur: 0.28px"></span>
-          <span style="--dx: 24px; --dy: 24px; --s: 0.95; --t: 2.34s; --w: 2px; --h: 2px; --a: 0.66; --blur: 0.34px"></span>
-          <span style="--dx: 84px; --dy: 14px; --s: 1; --t: 2.36s; --w: 2.8px; --h: 2px; --a: 0.8; --blur: 0.2px"></span>
-          <span style="--dx: 146px; --dy: 4px; --s: 1.05; --t: 2.35s; --w: 2.3px; --h: 2.3px; --a: 0.78; --blur: 0.26px"></span>
-          <span style="--dx: -124px; --dy: -96px; --s: 1.3; --t: 2.23s; --w: 2px; --h: 2.8px; --a: 0.74; --blur: 0.3px"></span>
-          <span style="--dx: 122px; --dy: -98px; --s: 1.3; --t: 2.23s; --w: 2.9px; --h: 2px; --a: 0.82; --blur: 0.2px"></span>
-          <span style="--dx: -236px; --dy: -18px; --s: 0.95; --t: 2.14s; --w: 2.2px; --h: 2.2px; --a: 0.7; --blur: 0.28px"></span>
-          <span style="--dx: -222px; --dy: -52px; --s: 1.05; --t: 2.16s; --w: 2.5px; --h: 2.5px; --a: 0.8; --blur: 0.22px"></span>
-          <span style="--dx: -198px; --dy: -108px; --s: 1.12; --t: 2.11s; --w: 2px; --h: 2.4px; --a: 0.72; --blur: 0.3px"></span>
-          <span style="--dx: -172px; --dy: -146px; --s: 1.18; --t: 2.17s; --w: 3.1px; --h: 2.2px; --a: 0.9; --blur: 0.16px"></span>
-          <span style="--dx: -134px; --dy: -164px; --s: 1.2; --t: 2.13s; --w: 2.4px; --h: 2.4px; --a: 0.82; --blur: 0.22px"></span>
-          <span style="--dx: -78px; --dy: -170px; --s: 1.18; --t: 2.18s; --w: 2.2px; --h: 2.2px; --a: 0.76; --blur: 0.3px"></span>
-          <span style="--dx: -2px; --dy: -172px; --s: 1.16; --t: 2.15s; --w: 2.8px; --h: 2.8px; --a: 0.9; --blur: 0.18px"></span>
-          <span style="--dx: 76px; --dy: -168px; --s: 1.18; --t: 2.16s; --w: 2.1px; --h: 2.5px; --a: 0.74; --blur: 0.28px"></span>
-          <span style="--dx: 132px; --dy: -156px; --s: 1.2; --t: 2.14s; --w: 2.6px; --h: 2.1px; --a: 0.82; --blur: 0.2px"></span>
-          <span style="--dx: 174px; --dy: -138px; --s: 1.15; --t: 2.19s; --w: 2px; --h: 2px; --a: 0.68; --blur: 0.34px"></span>
-          <span style="--dx: 204px; --dy: -104px; --s: 1.1; --t: 2.12s; --w: 2.4px; --h: 2.4px; --a: 0.78; --blur: 0.24px"></span>
-          <span style="--dx: 228px; --dy: -44px; --s: 1.02; --t: 2.17s; --w: 2.7px; --h: 2.3px; --a: 0.84; --blur: 0.2px"></span>
-          <span style="--dx: -188px; --dy: 26px; --s: 0.9; --t: 2.22s; --w: 2.1px; --h: 2.1px; --a: 0.66; --blur: 0.34px"></span>
-          <span style="--dx: -146px; --dy: 34px; --s: 0.88; --t: 2.24s; --w: 2.5px; --h: 2px; --a: 0.72; --blur: 0.27px"></span>
-          <span style="--dx: -92px; --dy: 42px; --s: 0.86; --t: 2.23s; --w: 2px; --h: 2.6px; --a: 0.7; --blur: 0.31px"></span>
-          <span style="--dx: -22px; --dy: 44px; --s: 0.86; --t: 2.25s; --w: 2.3px; --h: 2.3px; --a: 0.74; --blur: 0.26px"></span>
-          <span style="--dx: 42px; --dy: 44px; --s: 0.86; --t: 2.22s; --w: 2.8px; --h: 2px; --a: 0.8; --blur: 0.2px"></span>
-          <span style="--dx: 98px; --dy: 40px; --s: 0.88; --t: 2.24s; --w: 2px; --h: 2px; --a: 0.68; --blur: 0.35px"></span>
-          <span style="--dx: 148px; --dy: 34px; --s: 0.9; --t: 2.23s; --w: 2.4px; --h: 2.1px; --a: 0.76; --blur: 0.24px"></span>
-          <span style="--dx: 194px; --dy: 24px; --s: 0.92; --t: 2.25s; --w: 2.2px; --h: 2.2px; --a: 0.74; --blur: 0.28px"></span>
-          <span style="--dx: -286px; --dy: -22px; --s: 0.72; --t: 2.16s; --a: 0.64"></span>
-          <span style="--dx: -268px; --dy: -68px; --s: 0.7; --t: 2.18s; --a: 0.62"></span>
-          <span style="--dx: -246px; --dy: -124px; --s: 0.74; --t: 2.13s; --a: 0.66"></span>
-          <span style="--dx: -214px; --dy: -168px; --s: 0.76; --t: 2.11s; --a: 0.68"></span>
-          <span style="--dx: -168px; --dy: -198px; --s: 0.78; --t: 2.17s; --a: 0.7"></span>
-          <span style="--dx: -112px; --dy: -214px; --s: 0.8; --t: 2.14s; --a: 0.72"></span>
-          <span style="--dx: -46px; --dy: -224px; --s: 0.82; --t: 2.19s; --a: 0.74"></span>
-          <span style="--dx: 22px; --dy: -224px; --s: 0.82; --t: 2.2s; --a: 0.74"></span>
-          <span style="--dx: 88px; --dy: -214px; --s: 0.8; --t: 2.14s; --a: 0.72"></span>
-          <span style="--dx: 144px; --dy: -198px; --s: 0.78; --t: 2.16s; --a: 0.7"></span>
-          <span style="--dx: 192px; --dy: -172px; --s: 0.76; --t: 2.13s; --a: 0.68"></span>
-          <span style="--dx: 232px; --dy: -132px; --s: 0.74; --t: 2.18s; --a: 0.66"></span>
-          <span style="--dx: 264px; --dy: -74px; --s: 0.72; --t: 2.15s; --a: 0.64"></span>
-          <span style="--dx: 286px; --dy: -24px; --s: 0.72; --t: 2.17s; --a: 0.64"></span>
-          <span style="--dx: -252px; --dy: 26px; --s: 0.7; --t: 2.22s; --a: 0.6"></span>
-          <span style="--dx: -208px; --dy: 48px; --s: 0.68; --t: 2.24s; --a: 0.58"></span>
-          <span style="--dx: -152px; --dy: 62px; --s: 0.68; --t: 2.23s; --a: 0.58"></span>
-          <span style="--dx: -84px; --dy: 70px; --s: 0.66; --t: 2.25s; --a: 0.56"></span>
-          <span style="--dx: -12px; --dy: 74px; --s: 0.66; --t: 2.26s; --a: 0.56"></span>
-          <span style="--dx: 62px; --dy: 72px; --s: 0.66; --t: 2.24s; --a: 0.56"></span>
-          <span style="--dx: 132px; --dy: 64px; --s: 0.68; --t: 2.23s; --a: 0.58"></span>
-          <span style="--dx: 188px; --dy: 50px; --s: 0.68; --t: 2.25s; --a: 0.58"></span>
-          <span style="--dx: 234px; --dy: 30px; --s: 0.7; --t: 2.24s; --a: 0.6"></span>
-          <span style="--dx: -274px; --dy: -38px; --s: 0.58; --t: 2.13s; --w: 1.4px; --h: 1.2px; --a: 0.9; --blur: 0.08px"></span>
-          <span style="--dx: -238px; --dy: -146px; --s: 0.62; --t: 2.09s; --w: 1.2px; --h: 1.3px; --a: 0.94; --blur: 0.06px"></span>
-          <span style="--dx: -176px; --dy: -214px; --s: 0.64; --t: 2.08s; --w: 1.3px; --h: 1.3px; --a: 0.96; --blur: 0.05px"></span>
-          <span style="--dx: -108px; --dy: -236px; --s: 0.66; --t: 2.1s; --w: 1.5px; --h: 1.4px; --a: 0.94; --blur: 0.07px"></span>
-          <span style="--dx: -38px; --dy: -244px; --s: 0.66; --t: 2.11s; --w: 1.2px; --h: 1.2px; --a: 0.98; --blur: 0.04px"></span>
-          <span style="--dx: 28px; --dy: -246px; --s: 0.66; --t: 2.1s; --w: 1.3px; --h: 1.2px; --a: 0.96; --blur: 0.05px"></span>
-          <span style="--dx: 96px; --dy: -236px; --s: 0.66; --t: 2.12s; --w: 1.4px; --h: 1.3px; --a: 0.94; --blur: 0.06px"></span>
-          <span style="--dx: 164px; --dy: -212px; --s: 0.64; --t: 2.09s; --w: 1.2px; --h: 1.2px; --a: 0.98; --blur: 0.04px"></span>
-          <span style="--dx: 222px; --dy: -144px; --s: 0.62; --t: 2.1s; --w: 1.5px; --h: 1.3px; --a: 0.92; --blur: 0.08px"></span>
-          <span style="--dx: 272px; --dy: -44px; --s: 0.58; --t: 2.14s; --w: 1.3px; --h: 1.2px; --a: 0.9; --blur: 0.08px"></span>
-          <span style="--dx: -226px; --dy: 64px; --s: 0.56; --t: 2.22s; --w: 1.2px; --h: 1.2px; --a: 0.88; --blur: 0.07px"></span>
-          <span style="--dx: -154px; --dy: 86px; --s: 0.54; --t: 2.24s; --w: 1.4px; --h: 1.2px; --a: 0.86; --blur: 0.08px"></span>
-          <span style="--dx: -72px; --dy: 96px; --s: 0.54; --t: 2.25s; --w: 1.2px; --h: 1.2px; --a: 0.9; --blur: 0.06px"></span>
-          <span style="--dx: 4px; --dy: 100px; --s: 0.54; --t: 2.24s; --w: 1.3px; --h: 1.2px; --a: 0.92; --blur: 0.06px"></span>
-          <span style="--dx: 82px; --dy: 96px; --s: 0.54; --t: 2.23s; --w: 1.2px; --h: 1.2px; --a: 0.9; --blur: 0.06px"></span>
-          <span style="--dx: 158px; --dy: 84px; --s: 0.54; --t: 2.24s; --w: 1.4px; --h: 1.2px; --a: 0.88; --blur: 0.08px"></span>
-          <span style="--dx: 228px; --dy: 62px; --s: 0.56; --t: 2.22s; --w: 1.2px; --h: 1.2px; --a: 0.88; --blur: 0.07px"></span>
-          <span style="--dx: -198px; --dy: -8px; --s: 0.6; --t: 2.18s; --w: 1.2px; --h: 1.3px; --a: 0.9; --blur: 0.07px"></span>
-          <span style="--dx: -128px; --dy: -182px; --s: 0.62; --t: 2.07s; --w: 1.4px; --h: 1.4px; --a: 0.96; --blur: 0.05px"></span>
-          <span style="--dx: 126px; --dy: -184px; --s: 0.62; --t: 2.07s; --w: 1.4px; --h: 1.4px; --a: 0.96; --blur: 0.05px"></span>
-          <span style="--dx: 196px; --dy: -10px; --s: 0.6; --t: 2.18s; --w: 1.2px; --h: 1.3px; --a: 0.9; --blur: 0.07px"></span>
+          <span
+            style="
+              --dx: -214px;
+              --dy: -36px;
+              --s: 1.1;
+              --t: 2.28s;
+              --w: 2.2px;
+              --h: 2.2px;
+              --a: 0.76;
+              --blur: 0.3px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -182px;
+              --dy: -74px;
+              --s: 1.2;
+              --t: 2.26s;
+              --w: 2.8px;
+              --h: 2.8px;
+              --a: 0.9;
+              --blur: 0.22px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -146px;
+              --dy: -118px;
+              --s: 1.35;
+              --t: 2.24s;
+              --w: 2.1px;
+              --h: 2.6px;
+              --a: 0.72;
+              --blur: 0.35px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -86px;
+              --dy: -138px;
+              --s: 1.42;
+              --t: 2.31s;
+              --w: 3px;
+              --h: 2px;
+              --a: 0.86;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -24px;
+              --dy: -154px;
+              --s: 1.46;
+              --t: 2.27s;
+              --w: 2.6px;
+              --h: 2.6px;
+              --a: 0.84;
+              --blur: 0.24px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 34px;
+              --dy: -152px;
+              --s: 1.45;
+              --t: 2.33s;
+              --w: 2px;
+              --h: 2px;
+              --a: 0.7;
+              --blur: 0.36px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 94px;
+              --dy: -134px;
+              --s: 1.4;
+              --t: 2.29s;
+              --w: 3.1px;
+              --h: 2.1px;
+              --a: 0.9;
+              --blur: 0.18px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 152px;
+              --dy: -112px;
+              --s: 1.32;
+              --t: 2.25s;
+              --w: 2.4px;
+              --h: 2.4px;
+              --a: 0.82;
+              --blur: 0.24px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 188px;
+              --dy: -74px;
+              --s: 1.18;
+              --t: 2.3s;
+              --w: 2.2px;
+              --h: 2.2px;
+              --a: 0.78;
+              --blur: 0.3px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 216px;
+              --dy: -32px;
+              --s: 1.08;
+              --t: 2.28s;
+              --w: 2.7px;
+              --h: 2.3px;
+              --a: 0.84;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -162px;
+              --dy: 4px;
+              --s: 1.06;
+              --t: 2.35s;
+              --w: 2.4px;
+              --h: 2.1px;
+              --a: 0.72;
+              --blur: 0.25px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -106px;
+              --dy: 16px;
+              --s: 1;
+              --t: 2.36s;
+              --w: 2.1px;
+              --h: 2.1px;
+              --a: 0.68;
+              --blur: 0.32px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -42px;
+              --dy: 24px;
+              --s: 0.95;
+              --t: 2.37s;
+              --w: 2.5px;
+              --h: 2.2px;
+              --a: 0.75;
+              --blur: 0.28px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 24px;
+              --dy: 24px;
+              --s: 0.95;
+              --t: 2.34s;
+              --w: 2px;
+              --h: 2px;
+              --a: 0.66;
+              --blur: 0.34px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 84px;
+              --dy: 14px;
+              --s: 1;
+              --t: 2.36s;
+              --w: 2.8px;
+              --h: 2px;
+              --a: 0.8;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 146px;
+              --dy: 4px;
+              --s: 1.05;
+              --t: 2.35s;
+              --w: 2.3px;
+              --h: 2.3px;
+              --a: 0.78;
+              --blur: 0.26px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -124px;
+              --dy: -96px;
+              --s: 1.3;
+              --t: 2.23s;
+              --w: 2px;
+              --h: 2.8px;
+              --a: 0.74;
+              --blur: 0.3px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 122px;
+              --dy: -98px;
+              --s: 1.3;
+              --t: 2.23s;
+              --w: 2.9px;
+              --h: 2px;
+              --a: 0.82;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -236px;
+              --dy: -18px;
+              --s: 0.95;
+              --t: 2.14s;
+              --w: 2.2px;
+              --h: 2.2px;
+              --a: 0.7;
+              --blur: 0.28px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -222px;
+              --dy: -52px;
+              --s: 1.05;
+              --t: 2.16s;
+              --w: 2.5px;
+              --h: 2.5px;
+              --a: 0.8;
+              --blur: 0.22px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -198px;
+              --dy: -108px;
+              --s: 1.12;
+              --t: 2.11s;
+              --w: 2px;
+              --h: 2.4px;
+              --a: 0.72;
+              --blur: 0.3px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -172px;
+              --dy: -146px;
+              --s: 1.18;
+              --t: 2.17s;
+              --w: 3.1px;
+              --h: 2.2px;
+              --a: 0.9;
+              --blur: 0.16px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -134px;
+              --dy: -164px;
+              --s: 1.2;
+              --t: 2.13s;
+              --w: 2.4px;
+              --h: 2.4px;
+              --a: 0.82;
+              --blur: 0.22px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -78px;
+              --dy: -170px;
+              --s: 1.18;
+              --t: 2.18s;
+              --w: 2.2px;
+              --h: 2.2px;
+              --a: 0.76;
+              --blur: 0.3px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -2px;
+              --dy: -172px;
+              --s: 1.16;
+              --t: 2.15s;
+              --w: 2.8px;
+              --h: 2.8px;
+              --a: 0.9;
+              --blur: 0.18px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 76px;
+              --dy: -168px;
+              --s: 1.18;
+              --t: 2.16s;
+              --w: 2.1px;
+              --h: 2.5px;
+              --a: 0.74;
+              --blur: 0.28px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 132px;
+              --dy: -156px;
+              --s: 1.2;
+              --t: 2.14s;
+              --w: 2.6px;
+              --h: 2.1px;
+              --a: 0.82;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 174px;
+              --dy: -138px;
+              --s: 1.15;
+              --t: 2.19s;
+              --w: 2px;
+              --h: 2px;
+              --a: 0.68;
+              --blur: 0.34px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 204px;
+              --dy: -104px;
+              --s: 1.1;
+              --t: 2.12s;
+              --w: 2.4px;
+              --h: 2.4px;
+              --a: 0.78;
+              --blur: 0.24px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 228px;
+              --dy: -44px;
+              --s: 1.02;
+              --t: 2.17s;
+              --w: 2.7px;
+              --h: 2.3px;
+              --a: 0.84;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -188px;
+              --dy: 26px;
+              --s: 0.9;
+              --t: 2.22s;
+              --w: 2.1px;
+              --h: 2.1px;
+              --a: 0.66;
+              --blur: 0.34px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -146px;
+              --dy: 34px;
+              --s: 0.88;
+              --t: 2.24s;
+              --w: 2.5px;
+              --h: 2px;
+              --a: 0.72;
+              --blur: 0.27px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -92px;
+              --dy: 42px;
+              --s: 0.86;
+              --t: 2.23s;
+              --w: 2px;
+              --h: 2.6px;
+              --a: 0.7;
+              --blur: 0.31px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -22px;
+              --dy: 44px;
+              --s: 0.86;
+              --t: 2.25s;
+              --w: 2.3px;
+              --h: 2.3px;
+              --a: 0.74;
+              --blur: 0.26px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 42px;
+              --dy: 44px;
+              --s: 0.86;
+              --t: 2.22s;
+              --w: 2.8px;
+              --h: 2px;
+              --a: 0.8;
+              --blur: 0.2px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 98px;
+              --dy: 40px;
+              --s: 0.88;
+              --t: 2.24s;
+              --w: 2px;
+              --h: 2px;
+              --a: 0.68;
+              --blur: 0.35px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 148px;
+              --dy: 34px;
+              --s: 0.9;
+              --t: 2.23s;
+              --w: 2.4px;
+              --h: 2.1px;
+              --a: 0.76;
+              --blur: 0.24px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 194px;
+              --dy: 24px;
+              --s: 0.92;
+              --t: 2.25s;
+              --w: 2.2px;
+              --h: 2.2px;
+              --a: 0.74;
+              --blur: 0.28px;
+            "
+          ></span>
+          <span
+            style="--dx: -286px; --dy: -22px; --s: 0.72; --t: 2.16s; --a: 0.64"
+          ></span>
+          <span
+            style="--dx: -268px; --dy: -68px; --s: 0.7; --t: 2.18s; --a: 0.62"
+          ></span>
+          <span
+            style="--dx: -246px; --dy: -124px; --s: 0.74; --t: 2.13s; --a: 0.66"
+          ></span>
+          <span
+            style="--dx: -214px; --dy: -168px; --s: 0.76; --t: 2.11s; --a: 0.68"
+          ></span>
+          <span
+            style="--dx: -168px; --dy: -198px; --s: 0.78; --t: 2.17s; --a: 0.7"
+          ></span>
+          <span
+            style="--dx: -112px; --dy: -214px; --s: 0.8; --t: 2.14s; --a: 0.72"
+          ></span>
+          <span
+            style="--dx: -46px; --dy: -224px; --s: 0.82; --t: 2.19s; --a: 0.74"
+          ></span>
+          <span
+            style="--dx: 22px; --dy: -224px; --s: 0.82; --t: 2.2s; --a: 0.74"
+          ></span>
+          <span
+            style="--dx: 88px; --dy: -214px; --s: 0.8; --t: 2.14s; --a: 0.72"
+          ></span>
+          <span
+            style="--dx: 144px; --dy: -198px; --s: 0.78; --t: 2.16s; --a: 0.7"
+          ></span>
+          <span
+            style="--dx: 192px; --dy: -172px; --s: 0.76; --t: 2.13s; --a: 0.68"
+          ></span>
+          <span
+            style="--dx: 232px; --dy: -132px; --s: 0.74; --t: 2.18s; --a: 0.66"
+          ></span>
+          <span
+            style="--dx: 264px; --dy: -74px; --s: 0.72; --t: 2.15s; --a: 0.64"
+          ></span>
+          <span
+            style="--dx: 286px; --dy: -24px; --s: 0.72; --t: 2.17s; --a: 0.64"
+          ></span>
+          <span
+            style="--dx: -252px; --dy: 26px; --s: 0.7; --t: 2.22s; --a: 0.6"
+          ></span>
+          <span
+            style="--dx: -208px; --dy: 48px; --s: 0.68; --t: 2.24s; --a: 0.58"
+          ></span>
+          <span
+            style="--dx: -152px; --dy: 62px; --s: 0.68; --t: 2.23s; --a: 0.58"
+          ></span>
+          <span
+            style="--dx: -84px; --dy: 70px; --s: 0.66; --t: 2.25s; --a: 0.56"
+          ></span>
+          <span
+            style="--dx: -12px; --dy: 74px; --s: 0.66; --t: 2.26s; --a: 0.56"
+          ></span>
+          <span
+            style="--dx: 62px; --dy: 72px; --s: 0.66; --t: 2.24s; --a: 0.56"
+          ></span>
+          <span
+            style="--dx: 132px; --dy: 64px; --s: 0.68; --t: 2.23s; --a: 0.58"
+          ></span>
+          <span
+            style="--dx: 188px; --dy: 50px; --s: 0.68; --t: 2.25s; --a: 0.58"
+          ></span>
+          <span
+            style="--dx: 234px; --dy: 30px; --s: 0.7; --t: 2.24s; --a: 0.6"
+          ></span>
+          <span
+            style="
+              --dx: -274px;
+              --dy: -38px;
+              --s: 0.58;
+              --t: 2.13s;
+              --w: 1.4px;
+              --h: 1.2px;
+              --a: 0.9;
+              --blur: 0.08px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -238px;
+              --dy: -146px;
+              --s: 0.62;
+              --t: 2.09s;
+              --w: 1.2px;
+              --h: 1.3px;
+              --a: 0.94;
+              --blur: 0.06px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -176px;
+              --dy: -214px;
+              --s: 0.64;
+              --t: 2.08s;
+              --w: 1.3px;
+              --h: 1.3px;
+              --a: 0.96;
+              --blur: 0.05px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -108px;
+              --dy: -236px;
+              --s: 0.66;
+              --t: 2.1s;
+              --w: 1.5px;
+              --h: 1.4px;
+              --a: 0.94;
+              --blur: 0.07px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -38px;
+              --dy: -244px;
+              --s: 0.66;
+              --t: 2.11s;
+              --w: 1.2px;
+              --h: 1.2px;
+              --a: 0.98;
+              --blur: 0.04px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 28px;
+              --dy: -246px;
+              --s: 0.66;
+              --t: 2.1s;
+              --w: 1.3px;
+              --h: 1.2px;
+              --a: 0.96;
+              --blur: 0.05px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 96px;
+              --dy: -236px;
+              --s: 0.66;
+              --t: 2.12s;
+              --w: 1.4px;
+              --h: 1.3px;
+              --a: 0.94;
+              --blur: 0.06px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 164px;
+              --dy: -212px;
+              --s: 0.64;
+              --t: 2.09s;
+              --w: 1.2px;
+              --h: 1.2px;
+              --a: 0.98;
+              --blur: 0.04px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 222px;
+              --dy: -144px;
+              --s: 0.62;
+              --t: 2.1s;
+              --w: 1.5px;
+              --h: 1.3px;
+              --a: 0.92;
+              --blur: 0.08px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 272px;
+              --dy: -44px;
+              --s: 0.58;
+              --t: 2.14s;
+              --w: 1.3px;
+              --h: 1.2px;
+              --a: 0.9;
+              --blur: 0.08px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -226px;
+              --dy: 64px;
+              --s: 0.56;
+              --t: 2.22s;
+              --w: 1.2px;
+              --h: 1.2px;
+              --a: 0.88;
+              --blur: 0.07px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -154px;
+              --dy: 86px;
+              --s: 0.54;
+              --t: 2.24s;
+              --w: 1.4px;
+              --h: 1.2px;
+              --a: 0.86;
+              --blur: 0.08px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -72px;
+              --dy: 96px;
+              --s: 0.54;
+              --t: 2.25s;
+              --w: 1.2px;
+              --h: 1.2px;
+              --a: 0.9;
+              --blur: 0.06px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 4px;
+              --dy: 100px;
+              --s: 0.54;
+              --t: 2.24s;
+              --w: 1.3px;
+              --h: 1.2px;
+              --a: 0.92;
+              --blur: 0.06px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 82px;
+              --dy: 96px;
+              --s: 0.54;
+              --t: 2.23s;
+              --w: 1.2px;
+              --h: 1.2px;
+              --a: 0.9;
+              --blur: 0.06px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 158px;
+              --dy: 84px;
+              --s: 0.54;
+              --t: 2.24s;
+              --w: 1.4px;
+              --h: 1.2px;
+              --a: 0.88;
+              --blur: 0.08px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 228px;
+              --dy: 62px;
+              --s: 0.56;
+              --t: 2.22s;
+              --w: 1.2px;
+              --h: 1.2px;
+              --a: 0.88;
+              --blur: 0.07px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -198px;
+              --dy: -8px;
+              --s: 0.6;
+              --t: 2.18s;
+              --w: 1.2px;
+              --h: 1.3px;
+              --a: 0.9;
+              --blur: 0.07px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: -128px;
+              --dy: -182px;
+              --s: 0.62;
+              --t: 2.07s;
+              --w: 1.4px;
+              --h: 1.4px;
+              --a: 0.96;
+              --blur: 0.05px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 126px;
+              --dy: -184px;
+              --s: 0.62;
+              --t: 2.07s;
+              --w: 1.4px;
+              --h: 1.4px;
+              --a: 0.96;
+              --blur: 0.05px;
+            "
+          ></span>
+          <span
+            style="
+              --dx: 196px;
+              --dy: -10px;
+              --s: 0.6;
+              --t: 2.18s;
+              --w: 1.2px;
+              --h: 1.3px;
+              --a: 0.9;
+              --blur: 0.07px;
+            "
+          ></span>
         </div>
         <div class="intro-brand" aria-label="Easy By Isy">
           <p>Easy By Isy</p>
