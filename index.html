@@ -388,7 +388,7 @@
       }
 
       .gallery-grid {
-        columns: 4 220px;
+        columns: 5 170px;
         column-gap: 10px;
         margin-top: 0.5rem;
       }
@@ -425,6 +425,40 @@
       .gallery-item:hover img {
         transform: scale(1.05);
         opacity: 0.82;
+      }
+
+      .gallery-item.is-hidden {
+        display: none;
+      }
+
+      .gallery-actions {
+        margin-top: 1.2rem;
+        display: flex;
+        justify-content: center;
+      }
+
+      .gallery-more-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--accent2);
+        color: var(--text);
+        border: 1px solid var(--accent);
+        border-radius: var(--radius);
+        padding: 0.62rem 1.35rem;
+        font-size: 0.92rem;
+        font-weight: 600;
+        letter-spacing: 0.03em;
+        cursor: pointer;
+        transition:
+          background var(--transition),
+          transform var(--transition);
+      }
+
+      .gallery-more-btn:hover {
+        background: var(--accent);
+        color: var(--bg);
+        transform: translateY(-2px);
       }
 
       .gallery-overlay {
@@ -729,7 +763,7 @@
         }
 
         .gallery-grid {
-          columns: 3 140px;
+          columns: 3 120px;
           column-gap: 7px;
         }
         .gallery-item {
@@ -746,7 +780,7 @@
 
       @media (max-width: 480px) {
         .gallery-grid {
-          columns: 2;
+          columns: 2 110px;
           column-gap: 6px;
         }
         .gallery-item {
@@ -1236,6 +1270,11 @@
             </div>
           </div>
         </div>
+        <div class="gallery-actions">
+          <button class="gallery-more-btn" id="gallery-more-btn" type="button">
+            mostra altro
+          </button>
+        </div>
         <!-- end gallery-grid -->
       </div>
     </section>
@@ -1473,10 +1512,32 @@
       const galleryItems = Array.from(
         document.querySelectorAll(".gallery-item"),
       );
+      const galleryMoreBtn = document.getElementById("gallery-more-btn");
       const lightbox = document.getElementById("lightbox");
       const lbImg = document.getElementById("lightbox-img");
       const lbCounter = document.getElementById("lightbox-counter");
       let lbIndex = 0;
+
+      const initialVisibleItems = window.matchMedia("(max-width: 480px)")
+        .matches
+        ? 6
+        : window.matchMedia("(max-width: 768px)").matches
+          ? 8
+          : 12;
+      if (galleryItems.length > initialVisibleItems) {
+        galleryItems.forEach((item, index) => {
+          if (index >= initialVisibleItems) item.classList.add("is-hidden");
+        });
+
+        if (galleryMoreBtn) {
+          galleryMoreBtn.addEventListener("click", () => {
+            galleryItems.forEach((item) => item.classList.remove("is-hidden"));
+            galleryMoreBtn.style.display = "none";
+          });
+        }
+      } else if (galleryMoreBtn) {
+        galleryMoreBtn.style.display = "none";
+      }
 
       function updateLbCounter() {
         if (lbCounter)
