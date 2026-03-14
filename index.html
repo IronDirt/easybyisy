@@ -1,1203 +1,1635 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Easy By Isy</title>
-  <style>
-    /* ====== RESET & BASE ====== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #3a3a3a;
-      --bg-nav:    #2c2c2c;
-      --bg-card:   #474747;
-      --bg-section:#424242;
-      --accent:    #f0e8d8;
-      --accent2:   #c8c0b4;
-      --text:      #f0e8d8;
-      --text-muted:#b0a8a0;
-      --border:    #5a5a5a;
-      --radius:    8px;
-      --transition: 0.3s ease;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      line-height: 1.7;
-      min-height: 100vh;
-    }
-
-    a { color: var(--accent); text-decoration: none; transition: color var(--transition); }
-    a:hover { color: var(--text); }
-
-    /* ====== NAVBAR ====== */
-    #navbar {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      background: var(--bg-nav);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 2rem;
-      height: 70px;
-    }
-
-    .nav-logo {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .nav-logo img {
-      height: 44px;
-      width: auto;
-      border-radius: 4px;
-      object-fit: contain;
-    }
-
-    .nav-logo-text {
-      font-size: 1.3rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      color: var(--accent);
-    }
-
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    nav a {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      font-weight: 500;
-      padding: 0.45rem 0.85rem;
-      border-radius: var(--radius);
-      transition: color var(--transition), background var(--transition);
-      letter-spacing: 0.03em;
-    }
-
-    nav a:hover, nav a.active {
-      color: var(--accent);
-      background: rgba(240,232,216,0.1);
-    }
-
-    /* Language switcher */
-    .lang-switcher {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-      margin-left: 1.5rem;
-      border-left: 1px solid var(--border);
-      padding-left: 1.25rem;
-    }
-
-    .lang-btn {
-      background: none;
-      border: 1px solid transparent;
-      color: var(--text-muted);
-      font-size: 0.78rem;
-      font-weight: 600;
-      padding: 0.25rem 0.5rem;
-      border-radius: 4px;
-      cursor: pointer;
-      letter-spacing: 0.05em;
-      transition: color var(--transition), border-color var(--transition);
-    }
-
-    .lang-btn:hover, .lang-btn.active {
-      color: var(--accent);
-      border-color: var(--accent2);
-    }
-
-    /* Hamburger (mobile) */
-    .hamburger {
-      display: none;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 6px;
-      z-index: 1100;
-    }
-
-    .hamburger span {
-      display: block;
-      width: 26px; height: 2px;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: var(--transition);
-    }
-
-    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .hamburger.open span:nth-child(2) { opacity: 0; }
-    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Mobile nav drawer */
-    #mobile-nav {
-      display: flex;
-      position: fixed;
-      top: 78px;
-      left: 0.75rem;
-      right: 0.75rem;
-      background: rgba(44,44,44,0.92);
-      border: 1px solid rgba(200,192,180,0.25);
-      border-radius: 14px;
-      padding: 0.55rem 0.75rem 0.9rem;
-      z-index: 999;
-      flex-direction: column;
-      gap: 0.35rem;
-      box-shadow: 0 14px 34px rgba(0,0,0,0.42);
-      backdrop-filter: blur(10px);
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
-      transform: translateY(-8px) scale(0.98);
-      transform-origin: top center;
-      transition: opacity var(--transition), transform var(--transition), visibility var(--transition);
-    }
-
-    #mobile-nav.open {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: translateY(0) scale(1);
-    }
-
-    #mobile-nav a {
-      color: var(--text-muted);
-      font-size: 1rem;
-      font-weight: 500;
-      padding: 0.75rem 0.7rem;
-      border-radius: 10px;
-      border-bottom: none;
-      transition: background var(--transition), color var(--transition), transform var(--transition);
-    }
-
-    #mobile-nav a:hover, #mobile-nav a.active {
-      color: var(--accent);
-      background: rgba(240,232,216,0.1);
-      transform: translateX(2px);
-    }
-
-    .mobile-lang {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 0.45rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid rgba(200,192,180,0.2);
-    }
-
-    /* ====== SECTIONS ====== */
-    section {
-      padding: 100px 2rem 80px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    section:nth-child(even) { background: var(--bg-section); }
-
-    .section-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      width: 100%;
-    }
-
-    .section-title {
-      font-size: clamp(2rem, 4vw, 3rem);
-      font-weight: 700;
-      color: var(--accent);
-      margin-bottom: 2rem;
-      letter-spacing: 0.02em;
-      position: relative;
-      padding-bottom: 0.75rem;
-    }
-
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0;
-      width: 60px; height: 2px;
-      background: var(--accent2);
-      border-radius: 2px;
-    }
-
-    /* ====== HERO / CHI SONO ====== */
-    #chi-sono {
-      background: var(--bg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    #chi-sono::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: radial-gradient(ellipse at 30% 50%, rgba(140,101,53,0.08) 0%, transparent 65%);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    #chi-sono > .section-inner {
-      max-width: 50%;
-      margin: 0;
-      position: relative;
-      z-index: 2;
-    }
-
-    .chi-sono-placeholder {
-      color: var(--text-muted);
-      font-style: italic;
-      font-size: 1.05rem;
-    }
-
-    .chi-sono-content {
-      display: flex;
-      align-items: center;
-    }
-
-    .chi-sono-text {
-      flex: 1;
-    }
-
-    .chi-sono-photo {
-      position: absolute;
-      top: 0;
-      right: 0;
-      width: 50%;
-      height: 100%;
-      z-index: 0;
-    }
-
-    .chi-sono-photo::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 45%;
-      height: 100%;
-      background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    .chi-sono-photo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-
-    @media (max-width: 640px) {
-      #chi-sono {
-        padding-left: 0;
-        padding-right: 0;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy By Isy</title>
+    <style>
+      /* ====== RESET & BASE ====== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
       }
 
-      #chi-sono > .section-inner {
-        max-width: 100%;
-        padding-left: 1.2rem;
-        padding-right: 1.2rem;
+      :root {
+        --bg: #3a3a3a;
+        --bg-nav: #2c2c2c;
+        --bg-card: #474747;
+        --bg-section: #424242;
+        --accent: #f0e8d8;
+        --accent2: #c8c0b4;
+        --text: #f0e8d8;
+        --text-muted: #b0a8a0;
+        --border: #5a5a5a;
+        --radius: 8px;
+        --transition: 0.3s ease;
       }
 
-      .chi-sono-photo {
-        position: relative;
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "Segoe UI", Arial, sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        line-height: 1.7;
+        min-height: 100vh;
+      }
+
+      a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: color var(--transition);
+      }
+      a:hover {
+        color: var(--text);
+      }
+
+      /* ====== NAVBAR ====== */
+      #navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
+        background: var(--bg-nav);
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 2rem;
+        height: 70px;
+      }
+
+      .nav-logo {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+
+      .nav-logo img {
+        height: 44px;
+        width: auto;
+        border-radius: 4px;
+        object-fit: contain;
+      }
+
+      .nav-logo-text {
+        font-size: 1.3rem;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: var(--accent);
+      }
+
+      nav {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      nav a {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+        font-weight: 500;
+        padding: 0.45rem 0.85rem;
+        border-radius: var(--radius);
+        transition:
+          color var(--transition),
+          background var(--transition);
+        letter-spacing: 0.03em;
+      }
+
+      nav a:hover,
+      nav a.active {
+        color: var(--accent);
+        background: rgba(240, 232, 216, 0.1);
+      }
+
+      /* Language switcher */
+      .lang-switcher {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-left: 1.5rem;
+        border-left: 1px solid var(--border);
+        padding-left: 1.25rem;
+      }
+
+      .lang-btn {
+        background: none;
+        border: 1px solid transparent;
+        color: var(--text-muted);
+        font-size: 0.78rem;
+        font-weight: 600;
+        padding: 0.25rem 0.5rem;
+        border-radius: 4px;
+        cursor: pointer;
+        letter-spacing: 0.05em;
+        transition:
+          color var(--transition),
+          border-color var(--transition);
+      }
+
+      .lang-btn:hover,
+      .lang-btn.active {
+        color: var(--accent);
+        border-color: var(--accent2);
+      }
+
+      /* Hamburger (mobile) */
+      .hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 6px;
+        z-index: 1100;
+      }
+
+      .hamburger span {
+        display: block;
+        width: 26px;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 2px;
+        transition: var(--transition);
+      }
+
+      .hamburger.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+      .hamburger.open span:nth-child(2) {
+        opacity: 0;
+      }
+      .hamburger.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* Mobile nav drawer */
+      #mobile-nav {
+        display: flex;
+        position: fixed;
+        top: 78px;
+        left: 0.75rem;
+        right: 0.75rem;
+        background: rgba(44, 44, 44, 0.92);
+        border: 1px solid rgba(200, 192, 180, 0.25);
+        border-radius: 14px;
+        padding: 0.55rem 0.75rem 0.9rem;
+        z-index: 999;
+        flex-direction: column;
+        gap: 0.35rem;
+        box-shadow: 0 14px 34px rgba(0, 0, 0, 0.42);
+        backdrop-filter: blur(10px);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px) scale(0.98);
+        transform-origin: top center;
+        transition:
+          opacity var(--transition),
+          transform var(--transition),
+          visibility var(--transition);
+      }
+
+      #mobile-nav.open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0) scale(1);
+      }
+
+      #mobile-nav a {
+        color: var(--text-muted);
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 0.75rem 0.7rem;
+        border-radius: 10px;
+        border-bottom: none;
+        transition:
+          background var(--transition),
+          color var(--transition),
+          transform var(--transition);
+      }
+
+      #mobile-nav a:hover,
+      #mobile-nav a.active {
+        color: var(--accent);
+        background: rgba(240, 232, 216, 0.1);
+        transform: translateX(2px);
+      }
+
+      .mobile-lang {
+        display: flex;
+        gap: 0.5rem;
+        margin-top: 0.45rem;
+        padding-top: 0.75rem;
+        border-top: 1px solid rgba(200, 192, 180, 0.2);
+      }
+
+      /* ====== SECTIONS ====== */
+      section {
+        padding: 100px 2rem 80px;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      section:nth-child(even) {
+        background: var(--bg-section);
+      }
+
+      .section-inner {
+        max-width: 1100px;
+        margin: 0 auto;
         width: 100%;
-        height: min(68vh, 440px);
       }
 
-      /* On mobile: fade from left towards the center, like desktop */
-      .chi-sono-photo::after {
-        content: '';
+      .section-title {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 2rem;
+        letter-spacing: 0.02em;
+        position: relative;
+        padding-bottom: 0.75rem;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 60px;
+        height: 2px;
+        background: var(--accent2);
+        border-radius: 2px;
+      }
+
+      /* ====== HERO / CHI SONO ====== */
+      #chi-sono {
+        background: var(--bg);
+        position: relative;
+        overflow: hidden;
+      }
+
+      #chi-sono::before {
+        content: "";
         position: absolute;
         top: 0;
         left: 0;
-        width: 65%;
-        height: 100%;
-        background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
-      }
-    }
-
-    /* ====== GALLERY ====== */
-    #lavori { background: var(--bg-section); }
-
-    .gallery-grid {
-      columns: 4 220px;
-      column-gap: 10px;
-      margin-top: 0.5rem;
-    }
-
-    .gallery-item {
-      break-inside: avoid;
-      overflow: hidden;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      cursor: pointer;
-      position: relative;
-      background: var(--bg-card);
-      margin-bottom: 10px;
-      display: block;
-      transition: box-shadow var(--transition), transform var(--transition);
-    }
-
-    .gallery-item:hover {
-      box-shadow: 0 6px 28px rgba(0,0,0,0.45);
-      transform: translateY(-2px);
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.45s ease, opacity 0.3s ease;
-    }
-
-    .gallery-item:hover img { transform: scale(1.05); opacity: 0.82; }
-
-    .gallery-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(26,20,16,0.32);
-      opacity: 0;
-      transition: opacity var(--transition);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .gallery-item:hover .gallery-overlay { opacity: 1; }
-
-    .gallery-overlay svg {
-      width: 38px; height: 38px;
-      fill: var(--accent);
-      opacity: 0.9;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
-    }
-
-    /* ====== LIGHTBOX ====== */
-    #lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(10,8,6,0.95);
-      align-items: center;
-      justify-content: center;
-      cursor: zoom-out;
-    }
-
-    #lightbox.open { display: flex; }
-
-    #lightbox img {
-      max-width: 92vw;
-      max-height: 90vh;
-      object-fit: contain;
-      border-radius: var(--radius);
-      box-shadow: 0 8px 60px rgba(0,0,0,0.7);
-      cursor: default;
-    }
-
-    #lightbox-close {
-      position: absolute;
-      top: 1.2rem; right: 1.5rem;
-      background: none;
-      border: none;
-      color: var(--text);
-      font-size: 2.2rem;
-      cursor: pointer;
-      opacity: 0.7;
-      transition: opacity var(--transition);
-      line-height: 1;
-    }
-
-    #lightbox-close:hover { opacity: 1; }
-
-    #lightbox-prev, #lightbox-next {
-      position: absolute;
-      top: 50%; transform: translateY(-50%);
-      background: rgba(240,232,216,0.15);
-      border: 1px solid var(--accent2);
-      border-radius: var(--radius);
-      color: var(--accent);
-      font-size: 1.8rem;
-      width: 44px; height: 60px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: background var(--transition);
-    }
-
-    #lightbox-prev:hover, #lightbox-next:hover { background: rgba(240,232,216,0.3); }
-    #lightbox-prev { left: 1rem; }
-    #lightbox-next { right: 1rem; }
-
-    #lightbox-counter {
-      position: absolute;
-      bottom: 1.2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      color: var(--accent2);
-      font-size: 0.9rem;
-      letter-spacing: 0.06em;
-      opacity: 0.75;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    /* ====== CORSI ====== */
-    #corsi { background: var(--bg); }
-
-    .corsi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.5rem;
-      margin-top: 0.5rem;
-    }
-
-    .corso-card {
-      position: relative;
-      border-radius: var(--radius);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      background: var(--bg-card);
-      aspect-ratio: 3 / 4;
-    }
-
-    .corso-card img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: filter var(--transition);
-    }
-
-    .corso-card.past img {
-      filter: grayscale(60%) brightness(0.4);
-    }
-
-    .corso-badge {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      padding: 0.6rem 0.9rem;
-      background: rgba(44,44,44,0.85);
-      color: var(--text);
-      font-size: 0.9rem;
-      font-weight: 600;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 0.5rem;
-      backdrop-filter: blur(4px);
-    }
-
-    .corso-badge .corso-date {
-      font-size: 1rem;
-      letter-spacing: 0.03em;
-    }
-
-    .corso-past-label {
-      font-size: 0.75rem;
-      background: rgba(90,90,90,0.8);
-      color: var(--text-muted);
-      border-radius: 4px;
-      padding: 0.15rem 0.45rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-    }
-
-    @media (max-width: 768px) {
-      .corsi-grid {
-        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-        gap: 1rem;
-      }
-    }
-
-    /* ====== CONTATTO ====== */
-    #contatto { background: var(--bg-section); }
-
-    .contatto-inner {
-      max-width: 620px;
-    }
-
-    .contatto-text {
-      font-size: 1.1rem;
-      color: var(--text-muted);
-      margin-bottom: 2rem;
-      line-height: 1.8;
-    }
-
-    .btn-contact {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.6rem;
-      background: var(--accent2);
-      color: var(--text);
-      border: 1px solid var(--accent);
-      border-radius: var(--radius);
-      padding: 0.75rem 1.6rem;
-      font-size: 1rem;
-      font-weight: 600;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background var(--transition), transform var(--transition);
-      letter-spacing: 0.03em;
-    }
-
-    .btn-contact:hover {
-      background: var(--accent);
-      color: var(--bg);
-      transform: translateY(-2px);
-    }
-
-    .btn-contact svg {
-      width: 20px; height: 20px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    .contatto-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      align-items: center;
-    }
-
-    /* ====== FOOTER ====== */
-    footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--text-muted);
-      font-size: 0.85rem;
-      border-top: 1px solid var(--border);
-      background: var(--bg-nav);
-    }
-
-    footer span { color: var(--accent2); }
-
-    .footer-instagram {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.85rem;
-      transition: color var(--transition);
-      vertical-align: middle;
-      margin-left: 0.75rem;
-    }
-
-    .footer-instagram:hover { color: var(--accent); }
-
-    .footer-instagram svg {
-      width: 16px; height: 16px;
-      fill: currentColor;
-      flex-shrink: 0;
-    }
-
-    /* ====== RESPONSIVE ====== */
-    @media (max-width: 768px) {
-      .hamburger { display: flex; }
-      nav, .lang-switcher { display: none; }
-      #navbar { padding: 0 1.2rem; }
-
-      section { padding: 90px 1.2rem 60px; min-height: auto; }
-
-      #chi-sono {
-        padding-left: 0;
-        padding-right: 0;
+        right: 0;
+        bottom: 0;
+        background: radial-gradient(
+          ellipse at 30% 50%,
+          rgba(140, 101, 53, 0.08) 0%,
+          transparent 65%
+        );
+        pointer-events: none;
+        z-index: 1;
       }
 
       #chi-sono > .section-inner {
-        padding-left: 1.2rem;
-        padding-right: 1.2rem;
+        max-width: 50%;
+        margin: 0;
+        position: relative;
+        z-index: 2;
+      }
+
+      .chi-sono-placeholder {
+        color: var(--text-muted);
+        font-style: italic;
+        font-size: 1.05rem;
+      }
+
+      .chi-sono-content {
+        display: flex;
+        align-items: center;
+      }
+
+      .chi-sono-text {
+        flex: 1;
+      }
+
+      .chi-sono-photo {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        z-index: 0;
+      }
+
+      .chi-sono-photo::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 45%;
+        height: 100%;
+        background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      .chi-sono-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+      }
+
+      @media (max-width: 640px) {
+        #chi-sono {
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        #chi-sono > .section-inner {
+          max-width: 100%;
+          padding-left: 1.2rem;
+          padding-right: 1.2rem;
+        }
+
+        .chi-sono-photo {
+          position: relative;
+          width: 100%;
+          height: min(68vh, 440px);
+        }
+
+        /* On mobile: fade from left towards the center, like desktop */
+        .chi-sono-photo::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 65%;
+          height: 100%;
+          background: linear-gradient(to right, var(--bg) 0%, transparent 100%);
+        }
+      }
+
+      /* ====== GALLERY ====== */
+      #lavori {
+        background: var(--bg-section);
       }
 
       .gallery-grid {
-        columns: 3 140px;
-        column-gap: 7px;
+        columns: 4 220px;
+        column-gap: 10px;
+        margin-top: 0.5rem;
       }
-      .gallery-item { margin-bottom: 7px; }
 
-      #lightbox-prev { left: 0.3rem; }
-      #lightbox-next { right: 0.3rem; }
-    }
-
-    @media (max-width: 480px) {
-      .gallery-grid {
-        columns: 2;
-        column-gap: 6px;
+      .gallery-item {
+        break-inside: avoid;
+        overflow: hidden;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        cursor: pointer;
+        position: relative;
+        background: var(--bg-card);
+        margin-bottom: 10px;
+        display: block;
+        transition:
+          box-shadow var(--transition),
+          transform var(--transition);
       }
-      .gallery-item { margin-bottom: 6px; }
-    }
 
+      .gallery-item:hover {
+        box-shadow: 0 6px 28px rgba(0, 0, 0, 0.45);
+        transform: translateY(-2px);
+      }
 
-  </style>
-</head>
-<body>
+      .gallery-item img {
+        width: 100%;
+        height: auto;
+        display: block;
+        transition:
+          transform 0.45s ease,
+          opacity 0.3s ease;
+      }
 
-<!-- SVG sprite (hidden) -->
-<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-  <symbol id="icon-instagram" viewBox="0 0 24 24">
-    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.855.601 3.697 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.332 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 1.855-.085 3.697-.601 5.038-1.942 1.341-1.341 1.857-3.183 1.942-5.038.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.668-.072-4.948-.085-1.855-.601-3.697-1.942-5.038C20.645.673 18.803.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
-  </symbol>
-</svg>
+      .gallery-item:hover img {
+        transform: scale(1.05);
+        opacity: 0.82;
+      }
 
-<header id="navbar">
-  <div class="nav-logo">
-    <img src="img/Logo.jpeg" alt="Easy By Isy" />
-    <span class="nav-logo-text">Easy By Isy</span>
-  </div>
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: rgba(26, 20, 16, 0.32);
+        opacity: 0;
+        transition: opacity var(--transition);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
 
-  <nav id="desktop-nav">
-    <a href="#chi-sono" data-i18n="nav-chi-sono">Chi sono</a>
-    <a href="#lavori"   data-i18n="nav-lavori">Lavori</a>
-    <a href="#corsi"    data-i18n="nav-corsi">Corsi</a>
-    <a href="#contatto" data-i18n="nav-contatto">Contatto</a>
-  </nav>
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
 
-  <div class="lang-switcher" id="desktop-lang">
-    <button class="lang-btn" data-lang="it">IT</button>
-    <button class="lang-btn" data-lang="de">DE</button>
-    <button class="lang-btn" data-lang="en">EN</button>
-  </div>
+      .gallery-overlay svg {
+        width: 38px;
+        height: 38px;
+        fill: var(--accent);
+        opacity: 0.9;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.5));
+      }
 
-  <button class="hamburger" id="hamburger" aria-label="Menu" aria-expanded="false">
-    <span></span><span></span><span></span>
-  </button>
-</header>
+      /* ====== LIGHTBOX ====== */
+      #lightbox {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 2000;
+        background: rgba(10, 8, 6, 0.95);
+        align-items: center;
+        justify-content: center;
+        cursor: zoom-out;
+      }
 
-<!-- Mobile nav drawer -->
-<div id="mobile-nav">
-  <a href="#chi-sono" data-i18n="nav-chi-sono">Chi sono</a>
-  <a href="#lavori"   data-i18n="nav-lavori">Lavori</a>
-  <a href="#corsi"    data-i18n="nav-corsi">Corsi</a>
-  <a href="#contatto" data-i18n="nav-contatto">Contatto</a>
-  <div class="mobile-lang">
-    <button class="lang-btn" data-lang="it">IT</button>
-    <button class="lang-btn" data-lang="de">DE</button>
-    <button class="lang-btn" data-lang="en">EN</button>
-  </div>
-</div>
+      #lightbox.open {
+        display: flex;
+      }
 
-<!-- ====== CHI SONO ====== -->
-<section id="chi-sono">
-  <div class="section-inner">
-    <h1 class="section-title" data-i18n="nav-chi-sono">Chi sono</h1>
-    <div class="chi-sono-content">
-      <div class="chi-sono-text">
-        <p class="chi-sono-placeholder" data-i18n="chi-sono-placeholder">
-          xxxxx xxxxx, xxxxx xxxxx e xxxxx xxxxx.<br>
-          xxxxx xxxxx xxxxx xxxxx, xxxxx xxxxx xxxxx.<br>
-          xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx.
+      #lightbox img {
+        max-width: 92vw;
+        max-height: 90vh;
+        object-fit: contain;
+        border-radius: var(--radius);
+        box-shadow: 0 8px 60px rgba(0, 0, 0, 0.7);
+        cursor: default;
+      }
+
+      #lightbox-close {
+        position: absolute;
+        top: 1.2rem;
+        right: 1.5rem;
+        background: none;
+        border: none;
+        color: var(--text);
+        font-size: 2.2rem;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity var(--transition);
+        line-height: 1;
+      }
+
+      #lightbox-close:hover {
+        opacity: 1;
+      }
+
+      #lightbox-prev,
+      #lightbox-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background: rgba(240, 232, 216, 0.15);
+        border: 1px solid var(--accent2);
+        border-radius: var(--radius);
+        color: var(--accent);
+        font-size: 1.8rem;
+        width: 44px;
+        height: 60px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background var(--transition);
+      }
+
+      #lightbox-prev:hover,
+      #lightbox-next:hover {
+        background: rgba(240, 232, 216, 0.3);
+      }
+      #lightbox-prev {
+        left: 1rem;
+      }
+      #lightbox-next {
+        right: 1rem;
+      }
+
+      #lightbox-counter {
+        position: absolute;
+        bottom: 1.2rem;
+        left: 50%;
+        transform: translateX(-50%);
+        color: var(--accent2);
+        font-size: 0.9rem;
+        letter-spacing: 0.06em;
+        opacity: 0.75;
+        pointer-events: none;
+        white-space: nowrap;
+      }
+
+      /* ====== CORSI ====== */
+      #corsi {
+        background: var(--bg);
+      }
+
+      .corsi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.5rem;
+        margin-top: 0.5rem;
+      }
+
+      .corso-card {
+        position: relative;
+        border-radius: var(--radius);
+        border: 1px solid var(--border);
+        overflow: hidden;
+        background: var(--bg-card);
+        aspect-ratio: 3 / 4;
+      }
+
+      .corso-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: filter var(--transition);
+      }
+
+      .corso-card.past img {
+        filter: grayscale(60%) brightness(0.4);
+      }
+
+      .corso-badge {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 0.6rem 0.9rem;
+        background: rgba(44, 44, 44, 0.85);
+        color: var(--text);
+        font-size: 0.9rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        backdrop-filter: blur(4px);
+      }
+
+      .corso-badge .corso-date {
+        font-size: 1rem;
+        letter-spacing: 0.03em;
+      }
+
+      .corso-past-label {
+        font-size: 0.75rem;
+        background: rgba(90, 90, 90, 0.8);
+        color: var(--text-muted);
+        border-radius: 4px;
+        padding: 0.15rem 0.45rem;
+        text-transform: uppercase;
+        letter-spacing: 0.07em;
+      }
+
+      @media (max-width: 768px) {
+        .corsi-grid {
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 1rem;
+        }
+      }
+
+      /* ====== CONTATTO ====== */
+      #contatto {
+        background: var(--bg-section);
+      }
+
+      .contatto-inner {
+        max-width: 620px;
+      }
+
+      .contatto-text {
+        font-size: 1.1rem;
+        color: var(--text-muted);
+        margin-bottom: 2rem;
+        line-height: 1.8;
+      }
+
+      .btn-contact {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        background: var(--accent2);
+        color: var(--text);
+        border: 1px solid var(--accent);
+        border-radius: var(--radius);
+        padding: 0.75rem 1.6rem;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        text-decoration: none;
+        transition:
+          background var(--transition),
+          transform var(--transition);
+        letter-spacing: 0.03em;
+      }
+
+      .btn-contact:hover {
+        background: var(--accent);
+        color: var(--bg);
+        transform: translateY(-2px);
+      }
+
+      .btn-contact svg {
+        width: 20px;
+        height: 20px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+
+      .contatto-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+      }
+
+      /* ====== FOOTER ====== */
+      footer {
+        text-align: center;
+        padding: 2rem 1rem;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        border-top: 1px solid var(--border);
+        background: var(--bg-nav);
+      }
+
+      footer span {
+        color: var(--accent2);
+      }
+
+      .footer-instagram {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        color: var(--text-muted);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: color var(--transition);
+        vertical-align: middle;
+        margin-left: 0.75rem;
+      }
+
+      .footer-instagram:hover {
+        color: var(--accent);
+      }
+
+      .footer-instagram svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+
+      /* ====== RESPONSIVE ====== */
+      @media (max-width: 768px) {
+        .hamburger {
+          display: flex;
+        }
+        nav,
+        .lang-switcher {
+          display: none;
+        }
+        #navbar {
+          padding: 0 1.2rem;
+        }
+
+        section {
+          padding: 90px 1.2rem 60px;
+          min-height: auto;
+        }
+
+        #chi-sono {
+          padding-left: 0;
+          padding-right: 0;
+        }
+
+        #chi-sono > .section-inner {
+          padding-left: 1.2rem;
+          padding-right: 1.2rem;
+        }
+
+        .gallery-grid {
+          columns: 3 140px;
+          column-gap: 7px;
+        }
+        .gallery-item {
+          margin-bottom: 7px;
+        }
+
+        #lightbox-prev {
+          left: 0.3rem;
+        }
+        #lightbox-next {
+          right: 0.3rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .gallery-grid {
+          columns: 2;
+          column-gap: 6px;
+        }
+        .gallery-item {
+          margin-bottom: 6px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SVG sprite (hidden) -->
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
+      <symbol id="icon-instagram" viewBox="0 0 24 24">
+        <path
+          d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.336 3.608 1.311.975.975 1.249 2.242 1.311 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.336 2.633-1.311 3.608-.975.975-2.242 1.249-3.608 1.311-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.336-3.608-1.311-.975-.975-1.249-2.242-1.311-3.608C2.175 15.584 2.163 15.204 2.163 12s.012-3.584.07-4.85c.062-1.366.336-2.633 1.311-3.608.975-.975 2.242-1.249 3.608-1.311C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.741 0 8.332.014 7.052.072 5.197.157 3.355.673 2.014 2.014.673 3.355.157 5.197.072 7.052.014 8.332 0 8.741 0 12c0 3.259.014 3.668.072 4.948.085 1.855.601 3.697 1.942 5.038 1.341 1.341 3.183 1.857 5.038 1.942C8.332 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 1.855-.085 3.697-.601 5.038-1.942 1.341-1.341 1.857-3.183 1.942-5.038.058-1.28.072-1.689.072-4.948 0-3.259-.014-3.668-.072-4.948-.085-1.855-.601-3.697-1.942-5.038C20.645.673 18.803.157 16.948.072 15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zm0 10.162a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"
+        />
+      </symbol>
+    </svg>
+
+    <header id="navbar">
+      <div class="nav-logo">
+        <img src="img/Logo.jpeg" alt="Easy By Isy" />
+        <span class="nav-logo-text">Easy By Isy</span>
+      </div>
+
+      <nav id="desktop-nav">
+        <a href="#chi-sono" data-i18n="nav-chi-sono">Chi sono</a>
+        <a href="#lavori" data-i18n="nav-lavori">Lavori</a>
+        <a href="#corsi" data-i18n="nav-corsi">Corsi</a>
+        <a href="#contatto" data-i18n="nav-contatto">Contatto</a>
+      </nav>
+
+      <div class="lang-switcher" id="desktop-lang">
+        <button class="lang-btn" data-lang="it">IT</button>
+        <button class="lang-btn" data-lang="de">DE</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Menu"
+        aria-expanded="false"
+      >
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <!-- Mobile nav drawer -->
+    <div id="mobile-nav">
+      <a href="#chi-sono" data-i18n="nav-chi-sono">Chi sono</a>
+      <a href="#lavori" data-i18n="nav-lavori">Lavori</a>
+      <a href="#corsi" data-i18n="nav-corsi">Corsi</a>
+      <a href="#contatto" data-i18n="nav-contatto">Contatto</a>
+      <div class="mobile-lang">
+        <button class="lang-btn" data-lang="it">IT</button>
+        <button class="lang-btn" data-lang="de">DE</button>
+        <button class="lang-btn" data-lang="en">EN</button>
+      </div>
+    </div>
+
+    <!-- ====== CHI SONO ====== -->
+    <section id="chi-sono">
+      <div class="section-inner">
+        <h1 class="section-title" data-i18n="nav-chi-sono">Chi sono</h1>
+        <div class="chi-sono-content">
+          <div class="chi-sono-text">
+            <p class="chi-sono-placeholder" data-i18n="chi-sono-placeholder">
+              xxxxx xxxxx, xxxxx xxxxx e xxxxx xxxxx.<br />
+              xxxxx xxxxx xxxxx xxxxx, xxxxx xxxxx xxxxx.<br />
+              xxxxx xxxxx xxxxx xxxxx xxxxx xxxxx.
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="chi-sono-photo">
+        <img src="img/chisono.jpeg" alt="Chi sono" />
+      </div>
+    </section>
+
+    <!-- ====== LAVORI ====== -->
+    <section id="lavori">
+      <div class="section-inner">
+        <h2 class="section-title" data-i18n="nav-lavori">Lavori</h2>
+        <div class="gallery-grid" id="gallery">
+          <div class="gallery-item" data-index="0">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.12.jpeg"
+              alt="Lavoro 1"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="1">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.13 (1).jpeg"
+              alt="Lavoro 2"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="2">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.13.jpeg"
+              alt="Lavoro 3"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="3">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (1).jpeg"
+              alt="Lavoro 4"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="4">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (2).jpeg"
+              alt="Lavoro 5"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="5">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (3).jpeg"
+              alt="Lavoro 6"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="6">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (4).jpeg"
+              alt="Lavoro 7"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="7">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.36.39.jpeg"
+              alt="Lavoro 8"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="8">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.37.04.jpeg"
+              alt="Lavoro 9"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="9">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.37.13.jpeg"
+              alt="Lavoro 10"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="10">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.38.33.jpeg"
+              alt="Lavoro 11"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="11">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.39.34.jpeg"
+              alt="Lavoro 12"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="12">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.39.57.jpeg"
+              alt="Lavoro 13"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="13">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.40.14.jpeg"
+              alt="Lavoro 14"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="14">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.40.28.jpeg"
+              alt="Lavoro 15"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="15">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.41.02.jpeg"
+              alt="Lavoro 16"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="16">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (1).jpeg"
+              alt="Lavoro 17"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="17">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (2).jpeg"
+              alt="Lavoro 18"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="18">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (3).jpeg"
+              alt="Lavoro 19"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="19">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (4).jpeg"
+              alt="Lavoro 20"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="20">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (5).jpeg"
+              alt="Lavoro 21"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="21">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (6).jpeg"
+              alt="Lavoro 22"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="22">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (7).jpeg"
+              alt="Lavoro 23"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="23">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (8).jpeg"
+              alt="Lavoro 24"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="24">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (9).jpeg"
+              alt="Lavoro 25"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="25">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.38.jpeg"
+              alt="Lavoro 26"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+
+          <div class="gallery-item" data-index="26">
+            <img
+              src="galleria/WhatsApp Image 2026-03-10 at 12.42.54.jpeg"
+              alt="Lavoro 27"
+              loading="lazy"
+            />
+            <div class="gallery-overlay">
+              <svg viewBox="0 0 24 24">
+                <path
+                  d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- end gallery-grid -->
+      </div>
+    </section>
+
+    <!-- ====== CORSI ====== -->
+    <section id="corsi">
+      <div class="section-inner">
+        <h2 class="section-title" data-i18n="nav-corsi">Corsi</h2>
+        <div class="corsi-grid" id="corsi-grid">
+          <!-- Images injected by JavaScript based on date -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== CONTATTO ====== -->
+    <section id="contatto">
+      <div class="section-inner contatto-inner">
+        <h2 class="section-title" data-i18n="nav-contatto">Contatto</h2>
+        <p class="contatto-text" data-i18n="contatto-text">
+          Per collaborazioni, richieste, informazioni sui corsi o lezioni
+          private, non esitare a contattarmi — sarò felice di risponderti.
         </p>
+        <div class="contatto-buttons">
+          <a
+            class="btn-contact"
+            id="contact-btn"
+            href="mailto:info@easybyisy.com?subject=Contatto%20dal%20sito"
+            data-i18n-href-it="mailto:info@easybyisy.com?subject=Contatto%20dal%20sito"
+            data-i18n-href-de="mailto:info@easybyisy.com?subject=Kontaktanfrage%20von%20der%20Website"
+            data-i18n-href-en="mailto:info@easybyisy.com?subject=Contact%20from%20website"
+          >
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"
+              />
+            </svg>
+            <span data-i18n="contatto-btn">Scrivimi</span>
+          </a>
+          <a
+            class="btn-contact"
+            href="https://www.instagram.com/easybyisy/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <svg viewBox="0 0 24 24"><use href="#icon-instagram" /></svg>
+            <span data-i18n="instagram-btn">Seguimi su Instagram</span>
+          </a>
+        </div>
       </div>
-    </div>
-  </div>
-  <div class="chi-sono-photo">
-    <img src="img/chisono.jpeg" alt="Chi sono" />
-  </div>
-</section>
+    </section>
 
-<!-- ====== LAVORI ====== -->
-<section id="lavori">
-  <div class="section-inner">
-    <h2 class="section-title" data-i18n="nav-lavori">Lavori</h2>
-    <div class="gallery-grid" id="gallery">
-
-      <div class="gallery-item" data-index="0">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.12.jpeg" alt="Lavoro 1" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="1">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.13 (1).jpeg" alt="Lavoro 2" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="2">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.13.jpeg" alt="Lavoro 3" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="3">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (1).jpeg" alt="Lavoro 4" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="4">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (2).jpeg" alt="Lavoro 5" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="5">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (3).jpeg" alt="Lavoro 6" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="6">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.39 (4).jpeg" alt="Lavoro 7" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="7">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.36.39.jpeg" alt="Lavoro 8" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="8">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.37.04.jpeg" alt="Lavoro 9" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="9">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.37.13.jpeg" alt="Lavoro 10" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="10">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.38.33.jpeg" alt="Lavoro 11" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="11">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.39.34.jpeg" alt="Lavoro 12" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="12">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.39.57.jpeg" alt="Lavoro 13" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="13">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.40.14.jpeg" alt="Lavoro 14" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="14">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.40.28.jpeg" alt="Lavoro 15" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="15">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.41.02.jpeg" alt="Lavoro 16" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="16">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (1).jpeg" alt="Lavoro 17" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="17">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (2).jpeg" alt="Lavoro 18" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="18">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (3).jpeg" alt="Lavoro 19" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="19">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (4).jpeg" alt="Lavoro 20" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="20">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (5).jpeg" alt="Lavoro 21" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="21">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (6).jpeg" alt="Lavoro 22" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="22">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (7).jpeg" alt="Lavoro 23" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="23">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (8).jpeg" alt="Lavoro 24" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="24">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38 (9).jpeg" alt="Lavoro 25" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="25">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.38.jpeg" alt="Lavoro 26" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-      <div class="gallery-item" data-index="26">
-        <img src="galleria/WhatsApp Image 2026-03-10 at 12.42.54.jpeg" alt="Lavoro 27" loading="lazy" />
-        <div class="gallery-overlay"><svg viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg></div>
-      </div>
-
-    </div><!-- end gallery-grid -->
-  </div>
-</section>
-
-<!-- ====== CORSI ====== -->
-<section id="corsi">
-  <div class="section-inner">
-    <h2 class="section-title" data-i18n="nav-corsi">Corsi</h2>
-    <div class="corsi-grid" id="corsi-grid">
-      <!-- Images injected by JavaScript based on date -->
-    </div>
-  </div>
-</section>
-
-<!-- ====== CONTATTO ====== -->
-<section id="contatto">
-  <div class="section-inner contatto-inner">
-    <h2 class="section-title" data-i18n="nav-contatto">Contatto</h2>
-    <p class="contatto-text" data-i18n="contatto-text">
-      Per collaborazioni, richieste, informazioni sui corsi o lezioni private,
-      non esitare a contattarmi — sarò felice di risponderti.
-    </p>
-    <div class="contatto-buttons">
-      <a class="btn-contact"
-         id="contact-btn"
-         href="mailto:info@easybyisy.com?subject=Contatto%20dal%20sito"
-         data-i18n-href-it="mailto:info@easybyisy.com?subject=Contatto%20dal%20sito"
-         data-i18n-href-de="mailto:info@easybyisy.com?subject=Kontaktanfrage%20von%20der%20Website"
-         data-i18n-href-en="mailto:info@easybyisy.com?subject=Contact%20from%20website">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        <span data-i18n="contatto-btn">Scrivimi</span>
+    <!-- ====== FOOTER ====== -->
+    <footer>
+      <span>Easy By Isy</span> &mdash;
+      <span id="footer-email">info@easybyisy.com</span>
+      <a
+        class="footer-instagram"
+        href="https://www.instagram.com/easybyisy/"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Visit @easybyisy on Instagram"
+      >
+        <svg viewBox="0 0 24 24"><use href="#icon-instagram" /></svg>
+        @easybyisy
       </a>
-      <a class="btn-contact"
-         href="https://www.instagram.com/easybyisy/"
-         target="_blank"
-         rel="noopener noreferrer">
-        <svg viewBox="0 0 24 24"><use href="#icon-instagram"/></svg>
-        <span data-i18n="instagram-btn">Seguimi su Instagram</span>
-      </a>
+    </footer>
+
+    <!-- ====== LIGHTBOX ====== -->
+    <div
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Visualizzatore immagini"
+    >
+      <button id="lightbox-close" aria-label="Chiudi">&times;</button>
+      <button id="lightbox-prev" aria-label="Precedente">&#8249;</button>
+      <img id="lightbox-img" src="" alt="" />
+      <button id="lightbox-next" aria-label="Successivo">&#8250;</button>
+      <div id="lightbox-counter" aria-live="polite"></div>
     </div>
-  </div>
-</section>
 
-<!-- ====== FOOTER ====== -->
-<footer>
-  <span>Easy By Isy</span> &mdash; <span id="footer-email">info@easybyisy.com</span>
-  <a class="footer-instagram" href="https://www.instagram.com/easybyisy/" target="_blank" rel="noopener noreferrer" aria-label="Visit @easybyisy on Instagram">
-    <svg viewBox="0 0 24 24"><use href="#icon-instagram"/></svg>
-    @easybyisy
-  </a>
-</footer>
+    <!-- ====== JAVASCRIPT ====== -->
+    <script>
+      /* ---- i18n data ---- */
+      const translations = {
+        it: {
+          "nav-chi-sono": "Chi sono",
+          "nav-lavori": "Lavori",
+          "nav-corsi": "Corsi",
+          "nav-contatto": "Contatto",
+          "chi-sono-placeholder": "Contenuto in arrivo…",
+          "contatto-text":
+            "Per collaborazioni, richieste, informazioni sui corsi o lezioni private, non esitare a contattarmi — sarò felice di risponderti.",
+          "contatto-btn": "Scrivimi",
+          "instagram-btn": "Seguimi su Instagram",
+        },
+        de: {
+          "nav-chi-sono": "Über mich",
+          "nav-lavori": "Arbeiten",
+          "nav-corsi": "Kurse",
+          "nav-contatto": "Kontakt",
+          "chi-sono-placeholder": "Inhalte folgen demnächst…",
+          "contatto-text":
+            "Für Kooperationen, Anfragen, Informationen zu Kursen oder Privatstunden stehe ich gerne zur Verfügung — ich freue mich auf deine Nachricht.",
+          "contatto-btn": "Schreib mir",
+          "instagram-btn": "Folge mir auf Instagram",
+        },
+        en: {
+          "nav-chi-sono": "About me",
+          "nav-lavori": "Works",
+          "nav-corsi": "Courses",
+          "nav-contatto": "Contact",
+          "chi-sono-placeholder": "Content coming soon…",
+          "contatto-text":
+            "For collaborations, inquiries, information about courses or private lessons, feel free to reach out — I'll be happy to reply.",
+          "contatto-btn": "Write to me",
+          "instagram-btn": "Follow me on Instagram",
+        },
+      };
 
-<!-- ====== LIGHTBOX ====== -->
-<div id="lightbox" role="dialog" aria-modal="true" aria-label="Visualizzatore immagini">
-  <button id="lightbox-close" aria-label="Chiudi">&times;</button>
-  <button id="lightbox-prev" aria-label="Precedente">&#8249;</button>
-  <img id="lightbox-img" src="" alt="" />
-  <button id="lightbox-next" aria-label="Successivo">&#8250;</button>
-  <div id="lightbox-counter" aria-live="polite"></div>
-</div>
+      /* ---- detect language ---- */
+      function detectLang() {
+        const stored = localStorage.getItem("ebi-lang");
+        if (stored && translations[stored]) return stored;
+        const nav = (
+          navigator.language ||
+          navigator.userLanguage ||
+          "it"
+        ).toLowerCase();
+        if (nav.startsWith("de")) return "de";
+        if (nav.startsWith("it")) return "it";
+        return "en";
+      }
 
-<!-- ====== JAVASCRIPT ====== -->
-<script>
-  /* ---- i18n data ---- */
-  const translations = {
-    it: {
-      'nav-chi-sono':         'Chi sono',
-      'nav-lavori':           'Lavori',
-      'nav-corsi':            'Corsi',
-      'nav-contatto':         'Contatto',
-      'chi-sono-placeholder': 'Contenuto in arrivo…',
-      'contatto-text':        'Per collaborazioni, richieste, informazioni sui corsi o lezioni private, non esitare a contattarmi — sarò felice di risponderti.',
-      'contatto-btn':         'Scrivimi',
-      'instagram-btn':        'Seguimi su Instagram',
-    },
-    de: {
-      'nav-chi-sono':         'Über mich',
-      'nav-lavori':           'Arbeiten',
-      'nav-corsi':            'Kurse',
-      'nav-contatto':         'Kontakt',
-      'chi-sono-placeholder': 'Inhalte folgen demnächst…',
-      'contatto-text':        'Für Kooperationen, Anfragen, Informationen zu Kursen oder Privatstunden stehe ich gerne zur Verfügung — ich freue mich auf deine Nachricht.',
-      'contatto-btn':         'Schreib mir',
-      'instagram-btn':        'Folge mir auf Instagram',
-    },
-    en: {
-      'nav-chi-sono':         'About me',
-      'nav-lavori':           'Works',
-      'nav-corsi':            'Courses',
-      'nav-contatto':         'Contact',
-      'chi-sono-placeholder': 'Content coming soon…',
-      'contatto-text':        'For collaborations, inquiries, information about courses or private lessons, feel free to reach out — I\'ll be happy to reply.',
-      'contatto-btn':         'Write to me',
-      'instagram-btn':        'Follow me on Instagram',
-    }
-  };
+      /* ---- apply translations ---- */
+      let currentLang = detectLang();
 
-  /* ---- detect language ---- */
-  function detectLang() {
-    const stored = localStorage.getItem('ebi-lang');
-    if (stored && translations[stored]) return stored;
-    const nav = (navigator.language || navigator.userLanguage || 'it').toLowerCase();
-    if (nav.startsWith('de')) return 'de';
-    if (nav.startsWith('it')) return 'it';
-    return 'en';
-  }
+      function applyLang(lang) {
+        currentLang = lang;
+        localStorage.setItem("ebi-lang", lang);
+        document.documentElement.lang = lang;
 
-  /* ---- apply translations ---- */
-  let currentLang = detectLang();
+        const t = translations[lang];
+        document.querySelectorAll("[data-i18n]").forEach((el) => {
+          const key = el.getAttribute("data-i18n");
+          if (t[key] !== undefined) el.textContent = t[key];
+        });
 
-  function applyLang(lang) {
-    currentLang = lang;
-    localStorage.setItem('ebi-lang', lang);
-    document.documentElement.lang = lang;
+        /* update contact button href */
+        const btn = document.getElementById("contact-btn");
+        if (btn) {
+          const href = btn.getAttribute("data-i18n-href-" + lang);
+          if (href) btn.href = href;
+        }
 
-    const t = translations[lang];
-    document.querySelectorAll('[data-i18n]').forEach(el => {
-      const key = el.getAttribute('data-i18n');
-      if (t[key] !== undefined) el.textContent = t[key];
-    });
+        /* mark active lang button */
+        document.querySelectorAll(".lang-btn").forEach((b) => {
+          b.classList.toggle("active", b.dataset.lang === lang);
+        });
 
-    /* update contact button href */
-    const btn = document.getElementById('contact-btn');
-    if (btn) {
-      const href = btn.getAttribute('data-i18n-href-' + lang);
-      if (href) btn.href = href;
-    }
+        /* update lightbox aria-labels */
+        const labels = {
+          it: { close: "Chiudi", prev: "Precedente", next: "Successivo" },
+          de: { close: "Schließen", prev: "Zurück", next: "Weiter" },
+          en: { close: "Close", prev: "Previous", next: "Next" },
+        };
+        const lb = labels[lang] || labels.en;
+        document.getElementById("lightbox-close").ariaLabel = lb.close;
+        document.getElementById("lightbox-prev").ariaLabel = lb.prev;
+        document.getElementById("lightbox-next").ariaLabel = lb.next;
+      }
 
-    /* mark active lang button */
-    document.querySelectorAll('.lang-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.lang === lang);
-    });
+      /* ---- lang buttons ---- */
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        btn.addEventListener("click", () => applyLang(btn.dataset.lang));
+      });
 
-    /* update lightbox aria-labels */
-    const labels = {
-      it: { close: 'Chiudi', prev: 'Precedente', next: 'Successivo' },
-      de: { close: 'Schließen', prev: 'Zurück', next: 'Weiter' },
-      en: { close: 'Close', prev: 'Previous', next: 'Next' }
-    };
-    const lb = labels[lang] || labels.en;
-    document.getElementById('lightbox-close').ariaLabel = lb.close;
-    document.getElementById('lightbox-prev').ariaLabel  = lb.prev;
-    document.getElementById('lightbox-next').ariaLabel  = lb.next;
-  }
+      /* ---- hamburger ---- */
+      const hamburger = document.getElementById("hamburger");
+      const mobileNav = document.getElementById("mobile-nav");
 
-  /* ---- lang buttons ---- */
-  document.querySelectorAll('.lang-btn').forEach(btn => {
-    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
-  });
+      hamburger.addEventListener("click", () => {
+        const open = mobileNav.classList.toggle("open");
+        hamburger.classList.toggle("open", open);
+        hamburger.ariaExpanded = open;
+      });
 
-  /* ---- hamburger ---- */
-  const hamburger  = document.getElementById('hamburger');
-  const mobileNav  = document.getElementById('mobile-nav');
-
-  hamburger.addEventListener('click', () => {
-    const open = mobileNav.classList.toggle('open');
-    hamburger.classList.toggle('open', open);
-    hamburger.ariaExpanded = open;
-  });
-
-  /* close drawer on link click */
-  mobileNav.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      mobileNav.classList.remove('open');
-      hamburger.classList.remove('open');
-      hamburger.ariaExpanded = false;
-    });
-  });
-
-  document.addEventListener('click', (e) => {
-    if (!mobileNav.classList.contains('open')) return;
-    const clickedInsideMenu = mobileNav.contains(e.target);
-    const clickedHamburger = hamburger.contains(e.target);
-    if (!clickedInsideMenu && !clickedHamburger) {
-      mobileNav.classList.remove('open');
-      hamburger.classList.remove('open');
-      hamburger.ariaExpanded = false;
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key !== 'Escape') return;
-    if (!mobileNav.classList.contains('open')) return;
-    mobileNav.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.ariaExpanded = false;
-  });
-
-  /* ---- active nav on scroll ---- */
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('[data-i18n^="nav-"]');
-
-  function onScroll() {
-    let current = '';
-    sections.forEach(s => {
-      if (window.scrollY >= s.offsetTop - 100) current = s.id;
-    });
-    document.querySelectorAll('nav a, #mobile-nav a').forEach(a => {
-      const href = a.getAttribute('href').replace('#', '');
-      a.classList.toggle('active', href === current);
-    });
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-
-  /* ---- lightbox ---- */
-  const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
-  const lightbox     = document.getElementById('lightbox');
-  const lbImg        = document.getElementById('lightbox-img');
-  const lbCounter    = document.getElementById('lightbox-counter');
-  let lbIndex = 0;
-
-  function updateLbCounter() {
-    if (lbCounter) lbCounter.textContent = (lbIndex + 1) + ' / ' + galleryItems.length;
-  }
-
-  function openLightbox(idx) {
-    lbIndex = idx;
-    const src = galleryItems[idx].querySelector('img').src;
-    lbImg.src = src;
-    lightbox.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    updateLbCounter();
-  }
-
-  function closeLightbox() {
-    lightbox.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  function moveLightbox(dir) {
-    lbIndex = (lbIndex + dir + galleryItems.length) % galleryItems.length;
-    lbImg.src = galleryItems[lbIndex].querySelector('img').src;
-    updateLbCounter();
-  }
-
-  galleryItems.forEach(item => {
-    item.addEventListener('click', () => openLightbox(parseInt(item.dataset.index, 10)));
-  });
-
-  document.getElementById('lightbox-close').addEventListener('click', closeLightbox);
-  document.getElementById('lightbox-prev').addEventListener('click', e => { e.stopPropagation(); moveLightbox(-1); });
-  document.getElementById('lightbox-next').addEventListener('click', e => { e.stopPropagation(); moveLightbox(1); });
-
-  lightbox.addEventListener('click', e => {
-    if (e.target === lightbox) closeLightbox();
-  });
-
-  document.addEventListener('keydown', e => {
-    if (!lightbox.classList.contains('open')) return;
-    if (e.key === 'Escape')      closeLightbox();
-    if (e.key === 'ArrowLeft')   moveLightbox(-1);
-    if (e.key === 'ArrowRight')  moveLightbox(1);
-  });
-
-  /* touch/swipe support for lightbox */
-  let lbTouchStartX = 0;
-  lightbox.addEventListener('touchstart', e => {
-    lbTouchStartX = e.touches[0].clientX;
-  }, { passive: true });
-  lightbox.addEventListener('touchend', e => {
-    if (!e.changedTouches || e.changedTouches.length === 0) return;
-    const delta = e.changedTouches[0].clientX - lbTouchStartX;
-    if (Math.abs(delta) > 50) moveLightbox(delta < 0 ? 1 : -1);
-  }, { passive: true });
-
-  /* ---- init ---- */
-  applyLang(currentLang);
-  onScroll();
-
-  /* ---- corsi grid ---- */
-  (function buildCorsi() {
-    // All images in the corsi folder, filenames are DD.MM.YYYY.jpg or .jpeg
-    const corsiImages = [
-      '16.08.2025.jpg',
-      '28.03.2026.jpg'
-    ];
-
-    const grid = document.getElementById('corsi-grid');
-    if (!grid) return;
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const labels = {
-      it: { past: 'Passato', future: 'In programma' },
-      de: { past: 'Vergangen', future: 'Geplant' },
-      en: { past: 'Past', future: 'Upcoming' }
-    };
-
-    corsiImages.forEach(filename => {
-      // Parse DD.MM.YYYY from filename
-      const match = filename.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
-      if (!match) return;
-
-      const day   = parseInt(match[1], 10);
-      const month = parseInt(match[2], 10) - 1; // months 0-indexed
-      const year  = parseInt(match[3], 10);
-      const courseDate = new Date(year, month, day);
-      courseDate.setHours(0, 0, 0, 0);
-
-      const isPast = courseDate < today;
-
-      // Format display date: DD/MM/YYYY
-      const displayDate = `${match[1]}/${match[2]}/${match[3]}`;
-
-      const card = document.createElement('div');
-      card.className = 'corso-card' + (isPast ? ' past' : '');
-
-      const img = document.createElement('img');
-      img.src = `corsi/${filename}`;
-      img.alt = `Corso del ${displayDate}`;
-      img.loading = 'lazy';
-
-      const badge = document.createElement('div');
-      badge.className = 'corso-badge';
-
-      const dateSpan = document.createElement('span');
-      dateSpan.className = 'corso-date';
-      dateSpan.textContent = displayDate;
-
-      const statusSpan = document.createElement('span');
-      statusSpan.className = 'corso-past-label';
-      const lang = currentLang && labels[currentLang] ? currentLang : 'it';
-      statusSpan.textContent = isPast ? labels[lang].past : labels[lang].future;
-      statusSpan.dataset.corsoStatus = isPast ? 'past' : 'future';
-
-      badge.appendChild(dateSpan);
-      badge.appendChild(statusSpan);
-      card.appendChild(img);
-      card.appendChild(badge);
-      grid.appendChild(card);
-    });
-
-    // Re-render labels when language changes
-    const origApplyLang = applyLang;
-    // patch: update corso labels on lang change
-    document.querySelectorAll('.lang-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const lang = btn.dataset.lang;
-        document.querySelectorAll('[data-corso-status]').forEach(el => {
-          const status = el.dataset.corsoStatus;
-          el.textContent = labels[lang][status];
+      /* close drawer on link click */
+      mobileNav.querySelectorAll("a").forEach((a) => {
+        a.addEventListener("click", () => {
+          mobileNav.classList.remove("open");
+          hamburger.classList.remove("open");
+          hamburger.ariaExpanded = false;
         });
       });
-    });
-  })();
 
-</script>
-</body>
+      document.addEventListener("click", (e) => {
+        if (!mobileNav.classList.contains("open")) return;
+        const clickedInsideMenu = mobileNav.contains(e.target);
+        const clickedHamburger = hamburger.contains(e.target);
+        if (!clickedInsideMenu && !clickedHamburger) {
+          mobileNav.classList.remove("open");
+          hamburger.classList.remove("open");
+          hamburger.ariaExpanded = false;
+        }
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key !== "Escape") return;
+        if (!mobileNav.classList.contains("open")) return;
+        mobileNav.classList.remove("open");
+        hamburger.classList.remove("open");
+        hamburger.ariaExpanded = false;
+      });
+
+      /* ---- active nav on scroll ---- */
+      const sections = document.querySelectorAll("section[id]");
+      const navLinks = document.querySelectorAll('[data-i18n^="nav-"]');
+
+      function onScroll() {
+        let current = "";
+        sections.forEach((s) => {
+          if (window.scrollY >= s.offsetTop - 100) current = s.id;
+        });
+        document.querySelectorAll("nav a, #mobile-nav a").forEach((a) => {
+          const href = a.getAttribute("href").replace("#", "");
+          a.classList.toggle("active", href === current);
+        });
+      }
+
+      window.addEventListener("scroll", onScroll, { passive: true });
+
+      /* ---- lightbox ---- */
+      const galleryItems = Array.from(
+        document.querySelectorAll(".gallery-item"),
+      );
+      const lightbox = document.getElementById("lightbox");
+      const lbImg = document.getElementById("lightbox-img");
+      const lbCounter = document.getElementById("lightbox-counter");
+      let lbIndex = 0;
+
+      function updateLbCounter() {
+        if (lbCounter)
+          lbCounter.textContent = lbIndex + 1 + " / " + galleryItems.length;
+      }
+
+      function openLightbox(idx) {
+        lbIndex = idx;
+        const src = galleryItems[idx].querySelector("img").src;
+        lbImg.src = src;
+        lightbox.classList.add("open");
+        document.body.style.overflow = "hidden";
+        updateLbCounter();
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        document.body.style.overflow = "";
+      }
+
+      function moveLightbox(dir) {
+        lbIndex = (lbIndex + dir + galleryItems.length) % galleryItems.length;
+        lbImg.src = galleryItems[lbIndex].querySelector("img").src;
+        updateLbCounter();
+      }
+
+      galleryItems.forEach((item) => {
+        item.addEventListener("click", () =>
+          openLightbox(parseInt(item.dataset.index, 10)),
+        );
+      });
+
+      document
+        .getElementById("lightbox-close")
+        .addEventListener("click", closeLightbox);
+      document
+        .getElementById("lightbox-prev")
+        .addEventListener("click", (e) => {
+          e.stopPropagation();
+          moveLightbox(-1);
+        });
+      document
+        .getElementById("lightbox-next")
+        .addEventListener("click", (e) => {
+          e.stopPropagation();
+          moveLightbox(1);
+        });
+
+      lightbox.addEventListener("click", (e) => {
+        if (e.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (!lightbox.classList.contains("open")) return;
+        if (e.key === "Escape") closeLightbox();
+        if (e.key === "ArrowLeft") moveLightbox(-1);
+        if (e.key === "ArrowRight") moveLightbox(1);
+      });
+
+      /* touch/swipe support for lightbox */
+      let lbTouchStartX = 0;
+      lightbox.addEventListener(
+        "touchstart",
+        (e) => {
+          lbTouchStartX = e.touches[0].clientX;
+        },
+        { passive: true },
+      );
+      lightbox.addEventListener(
+        "touchend",
+        (e) => {
+          if (!e.changedTouches || e.changedTouches.length === 0) return;
+          const delta = e.changedTouches[0].clientX - lbTouchStartX;
+          if (Math.abs(delta) > 50) moveLightbox(delta < 0 ? 1 : -1);
+        },
+        { passive: true },
+      );
+
+      /* ---- init ---- */
+      applyLang(currentLang);
+      onScroll();
+
+      /* ---- corsi grid ---- */
+      (function buildCorsi() {
+        // All images in the corsi folder, filenames are DD.MM.YYYY.jpg or .jpeg
+        const corsiImages = ["16.08.2025.jpg", "28.03.2026.jpg"];
+
+        const grid = document.getElementById("corsi-grid");
+        if (!grid) return;
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        const labels = {
+          it: { past: "Passato", future: "In programma" },
+          de: { past: "Vergangen", future: "Geplant" },
+          en: { past: "Past", future: "Upcoming" },
+        };
+
+        corsiImages.forEach((filename) => {
+          // Parse DD.MM.YYYY from filename
+          const match = filename.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
+          if (!match) return;
+
+          const day = parseInt(match[1], 10);
+          const month = parseInt(match[2], 10) - 1; // months 0-indexed
+          const year = parseInt(match[3], 10);
+          const courseDate = new Date(year, month, day);
+          courseDate.setHours(0, 0, 0, 0);
+
+          const isPast = courseDate < today;
+
+          // Format display date: DD/MM/YYYY
+          const displayDate = `${match[1]}/${match[2]}/${match[3]}`;
+
+          const card = document.createElement("div");
+          card.className = "corso-card" + (isPast ? " past" : "");
+
+          const img = document.createElement("img");
+          img.src = `corsi/${filename}`;
+          img.alt = `Corso del ${displayDate}`;
+          img.loading = "lazy";
+
+          const badge = document.createElement("div");
+          badge.className = "corso-badge";
+
+          const dateSpan = document.createElement("span");
+          dateSpan.className = "corso-date";
+          dateSpan.textContent = displayDate;
+
+          const statusSpan = document.createElement("span");
+          statusSpan.className = "corso-past-label";
+          const lang = currentLang && labels[currentLang] ? currentLang : "it";
+          statusSpan.textContent = isPast
+            ? labels[lang].past
+            : labels[lang].future;
+          statusSpan.dataset.corsoStatus = isPast ? "past" : "future";
+
+          badge.appendChild(dateSpan);
+          badge.appendChild(statusSpan);
+          card.appendChild(img);
+          card.appendChild(badge);
+          grid.appendChild(card);
+        });
+
+        // Re-render labels when language changes
+        const origApplyLang = applyLang;
+        // patch: update corso labels on lang change
+        document.querySelectorAll(".lang-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const lang = btn.dataset.lang;
+            document.querySelectorAll("[data-corso-status]").forEach((el) => {
+              const status = el.dataset.corsoStatus;
+              el.textContent = labels[lang][status];
+            });
+          });
+        });
+      })();
+    </script>
+  </body>
 </html>
