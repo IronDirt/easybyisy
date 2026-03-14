@@ -1,0 +1,16 @@
+# Easy By Isy
+
+Sito ufficiale: https://easybyisy.com/
+
+## Descrizione
+Easy By Isy offre corsi, lezioni private e mostra una galleria di lavori creativi.
+
+## Pagine principali
+- https://easybyisy.com/
+
+## Contatti ufficiali
+- Email: info@easybyisy.com
+- Instagram: https://www.instagram.com/easybyisy/
+
+## Permessi crawling
+I contenuti pubblici del sito possono essere indicizzati e usati per ricerca e scoperta online.
