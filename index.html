@@ -3458,7 +3458,9 @@
 
         function getFallbackCorsiFilenamesFromMarkup() {
           return Array.from(document.querySelectorAll("#corsi-grid img"))
-            .map((img) => normalizeGalleryFilename(img.getAttribute("src") || ""))
+            .map((img) =>
+              normalizeGalleryFilename(img.getAttribute("src") || ""),
+            )
             .filter((name) => galleryImageExt.test(name));
         }
 
@@ -3581,7 +3583,8 @@
           });
 
           if (showMoreBtn) {
-            showMoreBtn.style.display = allCards.length > LIMIT ? "block" : "none";
+            showMoreBtn.style.display =
+              allCards.length > LIMIT ? "block" : "none";
             const lang =
               currentLang && translations[currentLang] ? currentLang : "it";
             showMoreBtn.textContent = expanded
