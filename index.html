@@ -110,8 +110,8 @@
         background:
           radial-gradient(
             ellipse at center,
-            rgba(85, 66, 47, 0.28) 0%,
-            rgba(32, 26, 22, 0.95) 66%
+            rgba(200, 192, 180, 0.18) 0%,
+            rgba(44, 44, 44, 0.95) 66%
           ),
           var(--bg);
         opacity: 1;
@@ -167,24 +167,27 @@
       }
 
       .intro-bowl {
-        width: clamp(108px, 16vw, 142px);
-        height: clamp(44px, 6.6vw, 60px);
+        width: var(--bowl-w, clamp(108px, 16vw, 142px));
+        height: var(--bowl-h, clamp(44px, 6.6vw, 60px));
         border-radius: 0 0 48% 48% / 0 0 100% 100%;
         border: none;
-        background: #8f6444;
-        box-shadow: 0 8px 0 rgba(0, 0, 0, 0.24);
+        background: rgb(28, 28, 28);
+        box-shadow: none;
         position: absolute;
         left: 50%;
         bottom: 26px;
-        transform-origin: center 100%;
-        animation-name: bowl-merge;
-        animation-duration: 1.65s;
-        animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-        animation-delay: var(--delay, 0s);
-        animation-iteration-count: 1;
-        animation-fill-mode: both;
+        z-index: var(--bowl-z, 1);
+        opacity: 1;
+        transform-origin: center 82%;
+        animation:
+          bowl-drop-stack 0.78s cubic-bezier(0.22, 0.61, 0.36, 1)
+            var(--delay, 0s) both,
+          bowl-collapse-into-first 0.76s cubic-bezier(0.2, 0.8, 0.24, 1)
+            var(--collapse-delay, 3.08s) forwards;
         will-change: transform, opacity;
         backface-visibility: hidden;
+        transform: translateZ(0);
+        overflow: hidden;
       }
 
       .intro-bowl::before {
@@ -192,22 +195,7 @@
       }
 
       .intro-bowl::after {
-        content: "";
-        position: absolute;
-        left: 13%;
-        right: 13%;
-        bottom: -24%;
-        height: 14px;
-        border-radius: 50%;
-        background: rgba(0, 0, 0, 0.34);
-        filter: blur(4px);
-        animation-name: bowl-shadow-merge;
-        animation-duration: 1.65s;
-        animation-timing-function: ease;
-        animation-delay: var(--delay, 0s);
-        animation-iteration-count: 1;
-        animation-fill-mode: both;
-        will-change: transform, opacity;
+        content: none;
       }
 
       .intro-bowl .flour-surface {
@@ -222,110 +210,104 @@
       }
 
       .intro-flour-cloud {
-        display: none;
+        position: absolute;
+        left: 50%;
+        bottom: 37%;
+        width: min(440px, 76vw);
+        height: 170px;
+        transform: translateX(-50%) scale(0.72);
+        border-radius: 50%;
+        background: radial-gradient(
+          ellipse at center,
+          rgba(240, 232, 216, 0.62) 0%,
+          rgba(240, 232, 216, 0.28) 32%,
+          rgba(240, 232, 216, 0.08) 64%,
+          rgba(255, 255, 255, 0) 100%
+        );
+        filter: blur(12px);
+        opacity: 0;
+        animation: flour-cloud-plume 0.96s cubic-bezier(0.18, 0.72, 0.22, 1)
+          3.88s both;
       }
 
       .intro-flour span {
         position: absolute;
         left: 50%;
-        bottom: 40%;
-        width: calc(var(--w, 1.35px) * 0.58);
-        height: calc(var(--h, 1.35px) * 0.58);
+        bottom: 39%;
+        width: calc(var(--w, 1.35px) * 0.66);
+        height: calc(var(--h, 1.35px) * 0.66);
         border-radius: 50%;
         background: rgba(255, 255, 255, var(--a, 0.9));
-        filter: blur(var(--blur, 0.12px));
+        filter: blur(var(--blur, 0.16px));
         mix-blend-mode: normal;
         opacity: 0;
-        transform: translate(-50%, 0) scale(0.22);
-        animation: flour-firework var(--flight, 1.46s)
-          cubic-bezier(0.2, 0.52, 0.24, 1) calc(var(--t, 1.76s) - 0.5s) forwards;
+        transform: translate3d(-50%, 0, 0) scale(0.28);
+        animation: flour-burst var(--flight, 1.08s)
+          cubic-bezier(0.16, 0.68, 0.24, 1) calc(var(--t, 1.76s) + 1.68s)
+          both;
         will-change: transform, opacity;
         backface-visibility: hidden;
-        --drift-mid: 0px;
-        --drift-low: 0px;
-        --fall-mid: 44px;
-        --apex-extra: 0px;
-        --arc-x: 0px;
-        --arc-y: 0px;
-        --peak-y: -66px;
-        --fade-rise: -24px;
-        --spread-x: 0px;
-        --spread-y: 0px;
+        --rise: -92px;
+        --drop: 136px;
+        --curl-x: 0px;
+        --curl-y: 0px;
+        --drag: 0px;
+        --a: 0.94;
       }
 
       .intro-flour span:nth-child(2n) {
-        --drift: 7px;
-        --fall: 126px;
-        --lift: 66px;
-        --drift-mid: 2px;
-        --drift-low: 4px;
-        --fall-mid: 46px;
-        --apex-extra: -6px;
-        --peak-y: -72px;
-        --fade-rise: -20px;
-        --spread-x: 30px;
-        --spread-y: -18px;
-        --flight: 1.28s;
+        --rise: -104px;
+        --drop: 128px;
+        --curl-x: 18px;
+        --curl-y: -10px;
+        --a: 0.96;
+        --flight: 1.02s;
       }
 
       .intro-flour span:nth-child(3n) {
-        --drift: -6px;
-        --fall: 114px;
-        --lift: 56px;
-        --drift-mid: -2px;
-        --drift-low: -3px;
-        --fall-mid: 38px;
-        --apex-extra: -3px;
-        --peak-y: -62px;
-        --fade-rise: -16px;
-        --spread-x: -28px;
-        --spread-y: -18px;
-        --flight: 1.34s;
+        --rise: -86px;
+        --drop: 142px;
+        --curl-x: -16px;
+        --curl-y: -8px;
+        --a: 0.92;
+        --flight: 1.12s;
       }
 
       .intro-flour span:nth-child(5n) {
-        --drift: 3px;
-        --fall: 136px;
-        --lift: 72px;
-        --drift-mid: 1px;
-        --drift-low: 2px;
-        --fall-mid: 52px;
-        --apex-extra: -8px;
-        --peak-y: -78px;
-        --fade-rise: -22px;
-        --spread-x: 42px;
-        --spread-y: -24px;
-        --flight: 1.48s;
+        --rise: -118px;
+        --drop: 150px;
+        --curl-x: 24px;
+        --curl-y: -14px;
+        --a: 0.98;
+        --flight: 1.2s;
       }
 
       .intro-flour span:nth-child(7n) {
-        --spread-x: -46px;
-        --spread-y: -28px;
+        --drag: -8px;
       }
 
       .intro-flour span:nth-child(11n) {
-        --spread-x: 50px;
-        --spread-y: -30px;
+        --drag: 10px;
       }
 
       .intro-flour span:nth-child(4n) {
-        --arc-x: 16px;
-        --arc-y: -10px;
+        --curl-x: 28px;
+        --curl-y: -16px;
       }
 
       .intro-flour span:nth-child(4n + 1) {
-        --arc-x: -18px;
-        --arc-y: -8px;
+        --curl-x: -24px;
+        --curl-y: -12px;
       }
 
       .intro-flour span:nth-child(4n + 2) {
-        --arc-x: 10px;
-        --arc-y: -14px;
+        --curl-x: 20px;
+        --curl-y: -18px;
       }
 
       .intro-flour span:nth-child(4n + 3) {
-        --arc-x: -12px;
-        --arc-y: -12px;
+        --curl-x: -20px;
+        --curl-y: -14px;
       }
 
       .intro-brand {
@@ -337,23 +319,16 @@
         align-items: center;
         justify-content: center;
         opacity: 0;
-        animation: brand-appear 0.82s cubic-bezier(0.2, 0.82, 0.2, 1) 2.18s
+        animation: brand-appear 0.82s cubic-bezier(0.2, 0.82, 0.2, 1) 4.16s
           forwards;
         z-index: 2;
       }
 
-      .intro-brand p {
-        font-family:
-          "Snell Roundhand", "Brush Script MT", "Segoe Script",
-          "Apple Chancery", cursive;
-        font-size: clamp(2rem, 5.6vw, 3.2rem);
-        font-weight: 500;
-        letter-spacing: 0.03em;
-        color: var(--accent);
-        text-shadow:
-          0 10px 24px rgba(0, 0, 0, 0.54),
-          0 0 10px rgba(255, 244, 226, 0.24);
-        white-space: nowrap;
+      .intro-brand img {
+        width: min(220px, 42vw);
+        height: auto;
+        display: block;
+        filter: drop-shadow(0 10px 24px rgba(0, 0, 0, 0.54));
       }
 
       .intro-stage::after {
@@ -370,90 +345,188 @@
         opacity: 0.52;
       }
 
-      @keyframes bowl-merge {
+      @keyframes bowl-drop-stack {
         0% {
-          opacity: 0;
-          transform: translate(-50%, var(--start-y, 76px))
-            translateX(var(--start-x)) rotate(var(--start-r)) scale(0.9);
-        }
-        12% {
-          opacity: 1;
-        }
-        52% {
-          transform: translate(-50%, var(--curve-y, -16px))
-            translateX(var(--curve-x)) rotate(var(--curve-r)) scale(1.01);
-        }
-        100% {
-          opacity: 1;
-          transform: translate(-50%, 0) translateX(0) rotate(0deg) scale(1);
-        }
-      }
-
-      @keyframes bowl-shadow-merge {
-        0% {
-          transform: scale(1);
-          opacity: 0.22;
-        }
-        52% {
-          transform: scale(0.76);
-          opacity: 0.28;
-        }
-        100% {
-          transform: scale(0.86);
-          opacity: 0.34;
-        }
-      }
-
-      @keyframes flour-firework {
-        0% {
-          opacity: 0;
-          transform: translate(-50%, 0) scale(0.35);
-        }
-        12% {
-          opacity: var(--a, 0.88);
-        }
-        42% {
-          opacity: var(--a, 0.88);
-          transform: translate(
-              calc(
-                -50% + var(--dx) + var(--spread-x, 0px) + var(--drift-mid, 0px)
-              ),
-              calc(
-                var(--peak-y, -58px) + var(--dy, 0px) + var(--apex-extra, 0px) +
-                  var(--spread-y, 0px)
-              )
+          transform: translate3d(
+              calc(-50% + var(--stack-x, 0px)),
+              calc(var(--stack-y, 0px) - 352px),
+              0
             )
-            scale(var(--s, 1.25));
+            rotate(calc(var(--stack-r, 0deg) * 0.58)) scale(0.9);
         }
         72% {
-          opacity: calc(var(--a, 0.88) * 0.68);
-          transform: translate(
+          transform: translate3d(
+              calc(-50% + var(--stack-x, 0px)),
+              calc(var(--stack-y, 0px) - 14px),
+              0
+            )
+            rotate(calc(var(--stack-r, 0deg) * 0.9)) scale(0.988);
+        }
+        88% {
+          transform: translate3d(
+              calc(-50% + var(--stack-x, 0px)),
+              calc(var(--stack-y, 0px) - 4px),
+              0
+            )
+            rotate(calc(var(--stack-r, 0deg) * 0.97)) scale(0.996);
+        }
+        100% {
+          transform: translate3d(
+              calc(-50% + var(--stack-x, 0px)),
+              var(--stack-y, 0px),
+              0
+            )
+            rotate(var(--stack-r, 0deg)) scale(1);
+        }
+      }
+
+      @keyframes bowl-collapse-into-first {
+        0% {
+          opacity: 1;
+          transform: translate3d(
+              calc(-50% + var(--stack-x, 0px)),
+              var(--stack-y, 0px),
+              0
+            )
+            rotate(var(--stack-r, 0deg)) scale(1);
+        }
+        72% {
+          opacity: 1;
+          transform: translate3d(
               calc(
-                -50% + var(--dx) + var(--spread-x, 0px) +
-                  calc(var(--arc-x, 0px) * 0.55) + var(--drift-mid, 0px)
+                -50% +
+                  calc(
+                    var(--stack-x, 0px) +
+                      (var(--collapse-x, 0px) - var(--stack-x, 0px)) * 0.8
+                  )
               ),
               calc(
-                var(--peak-y, -58px) + var(--dy, 0px) + var(--apex-extra, 0px) +
-                  calc(var(--fade-rise, -18px) * 0.45) +
-                  calc(var(--arc-y, 0px) * 0.55) + var(--spread-y, 0px)
-              )
+                var(--stack-y, 0px) +
+                  (var(--collapse-y, 0px) - var(--stack-y, 0px)) * 0.8 + 1px
+              ),
+              0
             )
-            scale(var(--s, 1.25));
+            rotate(calc(var(--stack-r, 0deg) * 0.16))
+            scale(calc(1 + (var(--end-scale, 0.72) - 1) * 0.8));
+        }
+        100% {
+          opacity: 1;
+          transform: translate3d(
+              calc(-50% + var(--collapse-x, 0px)),
+              var(--collapse-y, 0px),
+              0
+            )
+            rotate(0deg)
+            scale(var(--end-scale, 0.72));
+        }
+      }
+
+      @keyframes bowl-shadow-drop {
+        0% {
+          opacity: 0;
+          transform: translate3d(var(--stack-x, 0px), 0, 0) scale(0.28);
+        }
+        72% {
+          opacity: 0.34;
+          transform: translate3d(var(--stack-x, 0px), 0, 0) scale(0.82);
+        }
+        88% {
+          opacity: 0.33;
+          transform: translate3d(var(--stack-x, 0px), 0, 0) scale(0.86);
+        }
+        100% {
+          opacity: 0.32;
+          transform: translate3d(var(--stack-x, 0px), 0, 0) scale(0.88);
+        }
+      }
+
+      @keyframes bowl-shadow-collapse {
+        0% {
+          opacity: 0.32;
+          transform: translate3d(var(--stack-x, 0px), 0, 0) scale(0.88);
+        }
+        72% {
+          opacity: 0.14;
+          transform: translate3d(
+              calc(
+                var(--stack-x, 0px) +
+                  (var(--collapse-x, 0px) - var(--stack-x, 0px)) * 0.8
+              ),
+              0,
+              0
+            )
+            scale(calc(0.88 + (var(--shadow-end-scale, 0.46) - 0.88) * 0.8));
+        }
+        100% {
+          opacity: var(--shadow-end-o, 0.04);
+          transform: translate3d(var(--collapse-x, 0px), 0, 0)
+            scale(var(--shadow-end-scale, 0.46));
+        }
+      }
+
+      @keyframes flour-burst {
+        0% {
+          opacity: 0;
+          transform: translate3d(-50%, 0, 0) scale(0.22);
+        }
+        14% {
+          opacity: var(--a, 0.9);
+          transform: translate3d(-50%, -12px, 0) scale(0.42);
+        }
+        36% {
+          opacity: calc(var(--a, 0.94) * 0.96);
+          transform: translate3d(
+              calc(
+                -50% +
+                  calc(var(--dx, 0px) * 0.52) + calc(var(--curl-x, 0px) * 0.6)
+              ),
+              calc(var(--dy, 0px) + calc(var(--rise, -92px) * 0.86)),
+              0
+            )
+            scale(calc(var(--s, 1.18) * 1.12));
+        }
+        62% {
+          opacity: calc(var(--a, 0.9) * 0.74);
+          transform: translate3d(
+              calc(
+                -50% + var(--dx, 0px) + var(--curl-x, 0px) +
+                  calc(var(--drag, 0px) * 0.5)
+              ),
+              calc(var(--dy, 0px) + calc(var(--rise, -92px) * 0.38)),
+              0
+            )
+            scale(calc(var(--s, 1.08) * 0.98));
         }
         100% {
           opacity: 0;
-          transform: translate(
+          transform: translate3d(
               calc(
-                -50% + var(--dx) + var(--spread-x, 0px) + var(--arc-x, 0px) +
-                  var(--drift-mid, 0px)
+                -50% + var(--dx, 0px) + var(--curl-x, 0px) + var(--drag, 0px) +
+                  calc(var(--dx, 0px) * 0.12)
               ),
-              calc(
-                var(--peak-y, -58px) + var(--dy, 0px) + var(--apex-extra, 0px) +
-                  var(--fade-rise, -18px) + var(--arc-y, 0px) +
-                  var(--spread-y, 0px)
-              )
+              calc(var(--dy, 0px) + var(--drop, 136px) + 26px),
+              0
             )
-            scale(var(--s, 1.25));
+            scale(calc(var(--s, 0.96) * 0.82));
+        }
+      }
+
+      @keyframes flour-cloud-plume {
+        0% {
+          opacity: 0;
+          transform: translateX(-50%) scale(0.55);
+        }
+        26% {
+          opacity: 0.62;
+          transform: translateX(-50%) scale(1.02);
+        }
+        58% {
+          opacity: 0.18;
+          transform: translateX(-50%) scale(1.22);
+        }
+        100% {
+          opacity: 0;
+          transform: translateX(-50%) scale(1.34);
         }
       }
 
@@ -1280,12 +1353,20 @@
             class="intro-bowl"
             style="
               --delay: 0s;
-              --start-x: -235px;
-              --curve-x: -160px;
-              --start-r: -10deg;
-              --curve-r: 2.5deg;
-              --start-y: 68px;
-              --curve-y: -14px;
+              --bowl-z: 4;
+              --bowl-w: clamp(124px, 18vw, 158px);
+              --bowl-h: clamp(56px, 7.9vw, 72px);
+              --stack-x: 0px;
+              --stack-y: 0px;
+              --stack-r: 0deg;
+              --collapse-delay: 3.56s;
+              --collapse-x: 0px;
+              --collapse-y: 2px;
+              --collapse-r: 0deg;
+              --end-o: 1;
+              --end-scale: 1;
+              --shadow-end-o: 0.34;
+              --shadow-end-scale: 0.88;
             "
           >
             <span class="flour-surface"></span>
@@ -1293,13 +1374,17 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 0.03s;
-              --start-x: -95px;
-              --curve-x: -66px;
-              --start-r: -5deg;
-              --curve-r: 1.4deg;
-              --start-y: 86px;
-              --curve-y: -20px;
+              --delay: 0.5s;
+              --bowl-z: 3;
+              --bowl-w: clamp(116px, 16.8vw, 148px);
+              --bowl-h: clamp(52px, 7.4vw, 66px);
+              --stack-x: -4px;
+              --stack-y: -48px;
+              --stack-r: 13deg;
+              --collapse-delay: 3.44s;
+              --collapse-x: -2px;
+              --collapse-y: 0px;
+              --collapse-r: 22deg;
             "
           >
             <span class="flour-surface"></span>
@@ -1307,13 +1392,17 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 0.06s;
-              --start-x: 95px;
-              --curve-x: 66px;
-              --start-r: 5deg;
-              --curve-r: -1.4deg;
-              --start-y: 62px;
-              --curve-y: -12px;
+              --delay: 1s;
+              --bowl-z: 2;
+              --bowl-w: clamp(108px, 15.4vw, 138px);
+              --bowl-h: clamp(48px, 6.9vw, 60px);
+              --stack-x: 8px;
+              --stack-y: -96px;
+              --stack-r: -15deg;
+              --collapse-delay: 3.32s;
+              --collapse-x: 1px;
+              --collapse-y: -1px;
+              --collapse-r: -24deg;
             "
           >
             <span class="flour-surface"></span>
@@ -1321,13 +1410,35 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 0.09s;
-              --start-x: 235px;
-              --curve-x: 160px;
-              --start-r: 10deg;
-              --curve-r: -2.5deg;
-              --start-y: 80px;
-              --curve-y: -18px;
+              --delay: 1.5s;
+              --bowl-z: 1;
+              --bowl-w: clamp(98px, 14vw, 126px);
+              --bowl-h: clamp(44px, 6.2vw, 54px);
+              --stack-x: -3px;
+              --stack-y: -136px;
+              --stack-r: 17deg;
+              --collapse-delay: 3.2s;
+              --collapse-x: 2px;
+              --collapse-y: 0px;
+              --collapse-r: 28deg;
+            "
+          >
+            <span class="flour-surface"></span>
+          </div>
+          <div
+            class="intro-bowl"
+            style="
+              --delay: 2s;
+              --bowl-z: 0;
+              --bowl-w: clamp(88px, 12.8vw, 114px);
+              --bowl-h: clamp(40px, 5.8vw, 48px);
+              --stack-x: 4px;
+              --stack-y: -172px;
+              --stack-r: -19deg;
+              --collapse-delay: 3.08s;
+              --collapse-x: -1px;
+              --collapse-y: -2px;
+              --collapse-r: -30deg;
             "
           >
             <span class="flour-surface"></span>
@@ -2114,7 +2225,7 @@
           ></span>
         </div>
         <div class="intro-brand" aria-label="Easy By Isy">
-          <p>Easy By Isy</p>
+          <img src="img/scrittalogo.png" alt="Easy By Isy" />
         </div>
       </div>
     </div>
@@ -3026,7 +3137,7 @@
       }
 
       if (introOverlay) {
-        const introDuration = 3200;
+        const introDuration = 5900;
         setTimeout(closeIntro, introDuration);
         if (introSkipBtn) {
           introSkipBtn.addEventListener("click", closeIntro);
