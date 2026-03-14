@@ -243,8 +243,7 @@
         opacity: 0;
         transform: translate3d(-50%, 0, 0) scale(0.28);
         animation: flour-burst var(--flight, 1.08s)
-          cubic-bezier(0.16, 0.68, 0.24, 1) calc(var(--t, 1.76s) + 1.68s)
-          both;
+          cubic-bezier(0.16, 0.68, 0.24, 1) calc(var(--t, 1.76s) + 1.68s) both;
         will-change: transform, opacity;
         backface-visibility: hidden;
         --rise: -92px;
@@ -416,8 +415,7 @@
               var(--collapse-y, 0px),
               0
             )
-            rotate(0deg)
-            scale(var(--end-scale, 0.72));
+            rotate(0deg) scale(var(--end-scale, 0.72));
         }
       }
 
@@ -477,8 +475,8 @@
           opacity: calc(var(--a, 0.94) * 0.96);
           transform: translate3d(
               calc(
-                -50% +
-                  calc(var(--dx, 0px) * 0.52) + calc(var(--curl-x, 0px) * 0.6)
+                -50% + calc(var(--dx, 0px) * 0.52) +
+                  calc(var(--curl-x, 0px) * 0.6)
               ),
               calc(var(--dy, 0px) + calc(var(--rise, -92px) * 0.86)),
               0
