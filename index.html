@@ -180,9 +180,9 @@
         opacity: 1;
         transform-origin: center 82%;
         animation:
-          bowl-drop-stack 0.78s cubic-bezier(0.22, 0.61, 0.36, 1)
+          bowl-drop-stack 0.56s cubic-bezier(0.22, 0.61, 0.36, 1)
             var(--delay, 0s) both,
-          bowl-collapse-into-first 0.76s cubic-bezier(0.2, 0.8, 0.24, 1)
+          bowl-collapse-into-first 0.54s cubic-bezier(0.2, 0.8, 0.24, 1)
             var(--collapse-delay, 3.08s) forwards;
         will-change: transform, opacity;
         backface-visibility: hidden;
@@ -203,6 +203,7 @@
       }
 
       .intro-flour {
+        display: none;
         position: absolute;
         inset: 0;
         pointer-events: none;
@@ -318,7 +319,7 @@
         align-items: center;
         justify-content: center;
         opacity: 0;
-        animation: brand-appear 0.82s cubic-bezier(0.2, 0.82, 0.2, 1) 4.16s
+        animation: brand-appear 0.82s cubic-bezier(0.2, 0.82, 0.2, 1) 3.1s
           forwards;
         z-index: 2;
       }
@@ -1357,7 +1358,7 @@
               --stack-x: 0px;
               --stack-y: 0px;
               --stack-r: 0deg;
-              --collapse-delay: 3.56s;
+              --collapse-delay: 2.68s;
               --collapse-x: 0px;
               --collapse-y: 2px;
               --collapse-r: 0deg;
@@ -1372,14 +1373,14 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 0.5s;
+              --delay: 0.34s;
               --bowl-z: 3;
               --bowl-w: clamp(116px, 16.8vw, 148px);
               --bowl-h: clamp(52px, 7.4vw, 66px);
               --stack-x: -4px;
               --stack-y: -48px;
               --stack-r: 13deg;
-              --collapse-delay: 3.44s;
+              --collapse-delay: 2.56s;
               --collapse-x: -2px;
               --collapse-y: 0px;
               --collapse-r: 22deg;
@@ -1390,14 +1391,14 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 1s;
+              --delay: 0.68s;
               --bowl-z: 2;
               --bowl-w: clamp(108px, 15.4vw, 138px);
               --bowl-h: clamp(48px, 6.9vw, 60px);
               --stack-x: 8px;
               --stack-y: -96px;
               --stack-r: -15deg;
-              --collapse-delay: 3.32s;
+              --collapse-delay: 2.44s;
               --collapse-x: 1px;
               --collapse-y: -1px;
               --collapse-r: -24deg;
@@ -1408,14 +1409,14 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 1.5s;
+              --delay: 1.02s;
               --bowl-z: 1;
               --bowl-w: clamp(98px, 14vw, 126px);
               --bowl-h: clamp(44px, 6.2vw, 54px);
               --stack-x: -3px;
               --stack-y: -136px;
               --stack-r: 17deg;
-              --collapse-delay: 3.2s;
+              --collapse-delay: 2.32s;
               --collapse-x: 2px;
               --collapse-y: 0px;
               --collapse-r: 28deg;
@@ -1426,14 +1427,14 @@
           <div
             class="intro-bowl"
             style="
-              --delay: 2s;
+              --delay: 1.36s;
               --bowl-z: 0;
               --bowl-w: clamp(88px, 12.8vw, 114px);
               --bowl-h: clamp(40px, 5.8vw, 48px);
               --stack-x: 4px;
               --stack-y: -172px;
               --stack-r: -19deg;
-              --collapse-delay: 3.08s;
+              --collapse-delay: 2.2s;
               --collapse-x: -1px;
               --collapse-y: -2px;
               --collapse-r: -30deg;
@@ -3135,7 +3136,7 @@
       }
 
       if (introOverlay) {
-        const introDuration = 5900;
+        const introDuration = 4900;
         setTimeout(closeIntro, introDuration);
         if (introSkipBtn) {
           introSkipBtn.addEventListener("click", closeIntro);
