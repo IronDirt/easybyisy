@@ -3433,10 +3433,7 @@
       initDynamicGallery();
 
       /* ---- corsi grid ---- */
-      (function buildCorsi() {
-        // All images in the corsi folder, filenames are DD.MM.YYYY.jpg or .jpeg
-        const corsiImages = ["16.08.2025.jpg", "28.03.2026.jpg"];
-
+      (async function buildCorsi() {
         const grid = document.getElementById("corsi-grid");
         if (!grid) return;
 
@@ -3459,8 +3456,64 @@
             })
             .replace(/\b\w/g, (c) => c.toUpperCase());
 
-        // Parse dates and sort: future ascending (soonest first), then past descending (most recent first)
-        const parsed = corsiImages
+        function getFallbackCorsiFilenamesFromMarkup() {
+          return Array.from(document.querySelectorAll("#corsi-grid img"))
+            .map((img) => normalizeGalleryFilename(img.getAttribute("src") || ""))
+            .filter((name) => galleryImageExt.test(name));
+        }
+
+        async function fetchCorsiFilenamesFromPhp() {
+          const res = await fetch(`corsi/list.php?t=${Date.now()}`, {
+            cache: "no-store",
+          });
+          if (!res.ok) return [];
+          const data = await res.json();
+          if (!Array.isArray(data)) return [];
+          return data
+            .map((name) => String(name || "").trim())
+            .filter((name) => galleryImageExt.test(name));
+        }
+
+        async function fetchCorsiFilenamesFromDirectoryIndex() {
+          const res = await fetch(`corsi/?t=${Date.now()}`, {
+            cache: "no-store",
+          });
+          if (!res.ok) return [];
+
+          const html = await res.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, "text/html");
+          const links = Array.from(doc.querySelectorAll("a[href]"));
+
+          return links
+            .map((link) => normalizeGalleryFilename(link.getAttribute("href")))
+            .filter((name) => name && name !== "list.php")
+            .filter((name) => galleryImageExt.test(name));
+        }
+
+        let corsiImages = [];
+        try {
+          corsiImages = await fetchCorsiFilenamesFromPhp();
+        } catch (_err) {
+          corsiImages = [];
+        }
+
+        if (!corsiImages.length) {
+          try {
+            corsiImages = await fetchCorsiFilenamesFromDirectoryIndex();
+          } catch (_err) {
+            corsiImages = [];
+          }
+        }
+
+        if (!corsiImages.length) {
+          corsiImages = getFallbackCorsiFilenamesFromMarkup();
+        }
+
+        const uniqueImages = Array.from(new Set(corsiImages));
+
+        // Filenames expected: DD.MM.YYYY.jpg (or other image extensions)
+        const parsed = uniqueImages
           .map((filename) => {
             const match = filename.match(/^(\d{2})\.(\d{2})\.(\d{4})/);
             if (!match) return null;
@@ -3469,7 +3522,7 @@
             const year = parseInt(match[3], 10);
             const courseDate = new Date(year, month, day);
             courseDate.setHours(0, 0, 0, 0);
-            return { filename, courseDate, match };
+            return { filename, courseDate };
           })
           .filter(Boolean);
 
@@ -3480,16 +3533,17 @@
           .filter((c) => c.courseDate < today)
           .sort((a, b) => b.courseDate - a.courseDate);
 
-        [...future, ...past].forEach(({ filename, courseDate, match }) => {
-          const isPast = courseDate < today;
+        grid.innerHTML = "";
 
+        [...future, ...past].forEach(({ filename, courseDate }) => {
+          const isPast = courseDate < today;
           const displayDate = formatDate(courseDate, currentLang);
 
           const card = document.createElement("div");
           card.className = "corso-card" + (isPast ? " past" : "");
 
           const img = document.createElement("img");
-          img.src = `corsi/${filename}`;
+          img.src = `corsi/${encodeURIComponent(filename)}`;
           img.alt = `Corso del ${displayDate}`;
           img.loading = "lazy";
 
@@ -3499,7 +3553,7 @@
           const dateSpan = document.createElement("span");
           dateSpan.className = "corso-date";
           dateSpan.textContent = displayDate;
-          dateSpan.dataset.corsoTimestamp = courseDate.getTime();
+          dateSpan.dataset.corsoTimestamp = String(courseDate.getTime());
 
           const statusSpan = document.createElement("span");
           statusSpan.className = "corso-past-label";
@@ -3516,7 +3570,6 @@
           grid.appendChild(card);
         });
 
-        // Show/hide logic
         const LIMIT = 4;
         const allCards = Array.from(grid.querySelectorAll(".corso-card"));
         const showMoreBtn = document.getElementById("corsi-show-more");
@@ -3526,9 +3579,9 @@
           allCards.forEach((c, i) => {
             c.classList.toggle("corso-hidden", !expanded && i >= LIMIT);
           });
+
           if (showMoreBtn) {
-            showMoreBtn.style.display =
-              allCards.length > LIMIT ? "block" : "none";
+            showMoreBtn.style.display = allCards.length > LIMIT ? "block" : "none";
             const lang =
               currentLang && translations[currentLang] ? currentLang : "it";
             showMoreBtn.textContent = expanded
@@ -3546,7 +3599,6 @@
           });
         }
 
-        // Re-render labels + date + show-more text when language changes
         document.querySelectorAll(".lang-btn").forEach((btn) => {
           btn.addEventListener("click", () => {
             const lang = btn.dataset.lang;
@@ -3560,6 +3612,7 @@
                 const d = new Date(parseInt(el.dataset.corsoTimestamp, 10));
                 el.textContent = formatDate(d, lang);
               });
+
             if (showMoreBtn && allCards.length > LIMIT) {
               showMoreBtn.textContent = expanded
                 ? translations[lang]["corsi-show-less"]
